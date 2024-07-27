@@ -1,0 +1,10 @@
+{
+    "UseModlue": true,
+    "AdminModlue": true,
+    "Blogphp": true,
+    "Artisan": true,
+    "Module:make": true,
+    "Blog": true,
+    "UserModule": true,
+    "AdminModule": true
+}
