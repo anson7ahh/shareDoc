@@ -4,7 +4,7 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import Authenticated from "./AuthenticatedLayout";
 import { Link } from "@inertiajs/react";
 import React from "react";
-import Upload from "./UploadLayout";
+import Upload from "../Components/UploadComponent";
 
 export default function Navbar({
     auth,
@@ -13,15 +13,18 @@ export default function Navbar({
     showUpload = true,
 }) {
     return (
-        <nav className="bg-white border-red-200 h-[100px] w-full">
-            <div className=" mx-auto px-4 py-2 flex items-center justify-center">
+        <nav className="bg-white  h-[100px] w-full border border-gray-200  fixed ">
+            <div className="flex items-center justify-center mx-auto px-4 py-6  gap-5 w-full ">
                 {/* Logo */}
                 <div className="flex items-center">
                     <Link to="/">
                         <ApplicationLogo className="h-10 w-auto fill-current text-gray-800 dark:text-white" />
                     </Link>
                 </div>
-                <div className="">
+                <div>
+                    <div className={showSearchBar ? "" : "invisible"}>Menu</div>
+                </div>
+                <div className="flex items-center">
                     <div className={showSearchBar ? "" : "invisible"}>
                         <input
                             type="text"
@@ -30,14 +33,17 @@ export default function Navbar({
                         />
                     </div>
                 </div>
-                <div>
+                <div className="flex items-center">
                     <div className={showUpload ? "" : "invisible"}>
-                        <Upload user={auth} />
+                        <Upload auth={auth.user} />
                     </div>
                 </div>
-                <div>
-                    {auth ? (
-                        <Authenticated user={auth} />
+                <div className="flex items-center ">
+                    {auth.user ? (
+                        <Authenticated
+                            className={"flex items-center"}
+                            user={auth.user}
+                        />
                     ) : (
                         <>
                             <Link

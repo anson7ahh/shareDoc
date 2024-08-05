@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticateProviderController;
-
+use App\Http\Controllers\User\UploadController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,6 +28,10 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::prefix('/upload')->group(function () {
+    Route::get('/', [UploadController::class, 'index']);
+    Route::post('/', [UploadController::class, 'store'])->name('upload.store');
+});
 
 
 
