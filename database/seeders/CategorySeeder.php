@@ -19,35 +19,40 @@ class CategorySeeder extends Seeder
         $root = Category::create(['name' => 'Root Category ', 'slug' => Str::slug('Root Category ')]);
         $root->makeRoot();
         // // Tạo các danh mục con
-        $child1 = Category::create(['name' => 'Child Category ', 'slug' => Str::slug('Child Category ')]);
-        $child2 = Category::create(['name' => 'Child Category ', 'slug' => Str::slug('Child Category ')]);
+        $parent1 = Category::create(['name' => 'Child Category ', 'slug' => Str::slug('Child Category ')]);
+        $parent2 = Category::create(['name' => 'Child Category ', 'slug' => Str::slug('Child Category ')]);
 
         // // Thêm các danh mục con vào danh mục gốc
-        $child1->makeChildOf($root);
-        $child2->makeChildOf($root);
+        $parent1->makeChildOf($root);
+        $parent2->makeChildOf($root);
+
+
+        $Child1 = Category::create(['name' => 'Sub-Child Category 1', 'slug' => Str::slug('Sub-Child Category 1')]);
+        $Child2 = Category::create(['name' => 'Sub-Child Category 2', 'slug' => Str::slug('Sub-Child Category 2')]);
+
+        // // Thêm các danh mục con vào Child Category 1
+        $Child1->makeChildOf($parent1);
+        $Child2->makeChildOf($parent2);
+
+
         $root2 = Category::create(['name' => 'Root Category 2', 'slug' => Str::slug('Root Category 2')]);
         $root2->makeRoot();
-        // // Tạo các danh mục con
-        $child1 = Category::create(['name' => 'Child Category 2', 'slug' => Str::slug('Child Category 2')]);
-        $child2 = Category::create(['name' => 'Child Category 2', 'slug' => Str::slug('Child Category 2')]);
+        // // // Tạo các danh mục con
+        $parent1 = Category::create(['name' => 'Child Category 2', 'slug' => Str::slug('Child Category 2')]);
+        $parent2 = Category::create(['name' => 'Child Category 2', 'slug' => Str::slug('Child Category 2')]);
 
-        // // Thêm các danh mục con vào danh mục gốc
-        $child1->makeChildOf($root2);
-        $child2->makeChildOf($root2);
-        // Tạo các danh mục con cho Child Category 1
-        $subChild1 = Category::create(['name' => 'Sub-Child Category 1', 'slug' => Str::slug('Sub-Child Category 1')]);
-        $subChild2 = Category::create(['name' => 'Sub-Child Category 2', 'slug' => Str::slug('Sub-Child Category 2')]);
+        // // // Thêm các danh mục con vào danh mục gốc
+        $parent1->makeChildOf($root2);
+        $parent2->makeChildOf($root2);
+        // // Tạo các danh mục con cho Child Category 1
 
-        // Thêm các danh mục con vào Child Category 1
-        $subChild1->makeChildOf($child1);
-        $subChild2->makeChildOf($child1);
 
-        // Tạo các danh mục con cho Child Category 2
-        $subChild3 = Category::create(['name' => 'Sub-Child Category 3', 'slug' => Str::slug('Sub-Child Category 3')]);
-        $subChild4 = Category::create(['name' => 'Sub-Child Category 4', 'slug' => Str::slug('Sub-Child Category 4')]);
+        // // Tạo các danh mục con cho Child Category 2
+        $Child3 = Category::create(['name' => 'Sub-Child Category 3', 'slug' => Str::slug('Sub-Child Category 3')]);
+        $Child4 = Category::create(['name' => 'Sub-Child Category 4', 'slug' => Str::slug('Sub-Child Category 4')]);
 
-        // Thêm các danh mục con vào Child Category 2
-        $subChild3->makeChildOf($child2);
-        $subChild4->makeChildOf($child2);
+        // // Thêm các danh mục con vào Child Category 2
+        $Child3->makeChildOf($parent2);
+        $Child4->makeChildOf($parent1);
     }
 }

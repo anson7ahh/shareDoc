@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('doc_cates', function (Blueprint $table) {
             $table->id();
-             $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('document_id');
 
 
             $table->foreign('category_id')->references('id')->on('categories')
                 ->onDelete('cascade')->onUpdate('cascade');
-
             $table->foreign('document_id')->references('id')->on('documents')
                 ->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

@@ -30,7 +30,9 @@ Route::get('/', function () {
 
 Route::prefix('/upload')->group(function () {
     Route::get('/', [UploadController::class, 'index']);
-    Route::post('/', [UploadController::class, 'store'])->name('upload.store');
+    Route::post('/{name}', [UploadController::class, 'store'])->name('upload.store');
+    Route::get('/{id}', [UploadController::class, 'show'])->name('upload.show');
+    Route::post('/{id}', [UploadController::class, 'create'])->name('upload.create');
 });
 
 
