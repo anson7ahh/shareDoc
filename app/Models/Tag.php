@@ -12,6 +12,6 @@ class Tag extends Model
 
     public function Document_tag()
     {
-        return $this->hasmany('Document_tag::class');
+        return $this->hasMany('Document_tag::class');
     }
 }

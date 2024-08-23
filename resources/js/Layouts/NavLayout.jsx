@@ -4,7 +4,7 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import Authenticated from "./AuthenticatedLayout";
 import { Link } from "@inertiajs/react";
 import React from "react";
-import Upload from "../Components/UploadComponent";
+import UploadButton from "@/Components/ButtonUploadComponent";
 
 export default function Navbar({
     auth,
@@ -17,7 +17,7 @@ export default function Navbar({
             <div className="flex items-center justify-center mx-auto px-4 py-6  gap-5 w-full ">
                 {/* Logo */}
                 <div className="flex items-center">
-                    <Link to="/">
+                    <Link href="/">
                         <ApplicationLogo className="h-10 w-auto fill-current text-gray-800 dark:text-white" />
                     </Link>
                 </div>
@@ -35,7 +35,7 @@ export default function Navbar({
                 </div>
                 <div className="flex items-center">
                     <div className={showUpload ? "" : "invisible"}>
-                        <Upload auth={auth.user} />
+                        <UploadButton auth={auth.user} />
                     </div>
                 </div>
                 <div className="flex items-center ">

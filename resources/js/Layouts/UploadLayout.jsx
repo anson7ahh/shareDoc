@@ -1,44 +1,34 @@
-import { useForm, usePage } from "@inertiajs/react";
-
-import Category from "@/Components/CategoryComponent";
 import FooterLayout from "./FooterLLayoout";
-import Progress from "@/Components/Progress";
-import { useCallback } from "react";
+import UploadComponent from "@/Components/UploadComponent";
+import { useForm } from "@inertiajs/react";
 
-export default function UploadLayout() {
-    const { categoriesParent } = usePage().props;
+export default function UploadLayout({ categoriesParent }) {
     const { data, setData, post } = useForm({
         file: null,
         title: "",
         description: "",
         source: "",
         point: "",
-
+        category_id: "",
+        progress: 0,
     });
 
-    const handleChangeFile = useCallback((e) => {
+    const handleChangeFile = ((e) => {
         const file = e.target.files[0];
-        if (file) {
+        setData({
+            ...data,
+            file: file,
+            title: file.name,
+        });
+    });
 
-            if (data.file !== file) {
-                setData({
-                    ...data,
-                    file: file,
-                    title: file.name,
-                });
-            }
-        }
-    }, [data.file]);
+
+
     return (
         <>
             <div className="pt-[120px] mx-20 ">
-                <form
-                    className=""
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        post("/upload");
-                    }}
-                >
+                <form action="">
+
                     <div className="flex flex-col items-center border-dotted border-2 border-indigo-600">
                         <div>
                             <p className="my-4 text-center font-bold text-2xl font-sans">
@@ -59,7 +49,6 @@ export default function UploadLayout() {
                                     name="file"
                                     type="file"
                                     onChange={handleChangeFile}
-
                                 />
                             </div>
                         </label>
@@ -76,91 +65,12 @@ export default function UploadLayout() {
                             </p>
                         </div>
                     </div>
-                    <Progress file={data.file} />
-                    {data?.file ?
-                        <div className="flex flex-col gap-4 mt-2" id="fileDetail">
-                            <div><p className="text-pretty font-bold font-mono text-xl">Thêm thông tin cho tài liệu </p></div>
-                            <div>
-                                <label
-                                    htmlFor="title"
-                                    className=" text-lg font-mono text-gray-700 mb-1"
-                                >
-                                    Tên tài liệu
-                                    <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    type="text"
-                                    name="title"
-                                    id="title"
-                                    value={data.title}
-                                    placeholder="Tên tài liệu"
-                                    className="block w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    onChange={(e) => setData("title", e.target.value)}
-                                />
-                            </div>
-                            <Category categoriesParent={categoriesParent} />
-                            <label
-                                htmlFor="description"
-                                className=" text-lg font-mono text-gray-700 mb-1"
-                            >
-                                Mô tả
-                            </label>
-                            <textarea
-                                name="description"
-                                id="description"
-                                value={data.description}
-                                placeholder="Mô tả chi tiết tài liệu của bạn ."
-                                className="border border-gray-300 p-2 rounded resize-none h-[120px] focus:ring-blue-500 focus:border-blue-500"
-                                onChange={(e) => setData("description", e.target.value)}
-                                required
-                            ></textarea>
-                            <label
-                                htmlFor="source"
-                                className=" text-lg font-mono text-gray-700 mb-1"
-                            >
-                                Nguồn(nếu có)
-
-                            </label>
-                            <input
-                                type="text"
-                                name="source"
-                                id="source"
-                                value={data.source}
-                                placeholder="Nguồn (nếu có)"
-                                className="border border-gray-300 p-2 rounded"
-                                onChange={(e) => setData("source", e.target.value)}
-                            />
-                            <label
-                                htmlFor="point"
-                                className=" text-lg font-mono text-gray-700 mb-1"
-                            >
-                                Giá
-                                <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="number"
-                                name="point"
-                                id="point"
-                                value={data.point}
-                                placeholder="Giá"
-                                className="border border-gray-300 p-2 rounded text-gray-500"
-                                onChange={(e) => setData("point", e.target.value)}
-                            />
-                            <button
-                                type="submit"
-                                id="submit-btn"
-                                className="bg-blue-500 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-                                disabled={!data.file || !data.title || !data.point}
-                            >
-                                Lưu thông tin
-                            </button>
-                        </div>
-                        : (<div className="hidden"></div>)}
+                    <UploadComponent file={data.file} />
                 </form>
 
                 <FooterLayout />
-            </div>
 
+            </div>
         </>
     );
 }

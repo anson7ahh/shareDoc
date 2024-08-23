@@ -25,7 +25,7 @@ class User extends Authenticatable
         'provider_id',
         'provider_token',
         'total_points',
-        'avatar,'
+        'img',
     ];
 
     /**

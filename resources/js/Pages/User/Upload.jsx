@@ -1,6 +1,11 @@
 import Navbar from "@/Layouts/NavLayout";
 import UploadLayout from "@/Layouts/UploadLayout";
-export default function Upload({ auth }) {
+import { createContext } from "react";
+
+export const CategoriesParentContext = createContext([])
+
+export default function Upload({ auth, categoriesParent }) {
+    console.log(typeof (categoriesParent))
     return (
         <>
             <Navbar
@@ -9,7 +14,9 @@ export default function Upload({ auth }) {
                 showMenu={false}
                 showUpload={false}
             />
-            <UploadLayout />
+            <CategoriesParentContext.Provider value={categoriesParent}>
+                <UploadLayout />
+            </CategoriesParentContext.Provider>
         </>
     );
 }

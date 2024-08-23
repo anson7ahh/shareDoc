@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\DownloadHistoryStatusEnum;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DownloadHistory extends Model
 {
     use HasFactory;
+    protected $casts = [
+        'status' => DownloadHistoryStatusEnum::class,
+
+    ];
     public function User()
     {
         return $this->belongsTo('User::class');

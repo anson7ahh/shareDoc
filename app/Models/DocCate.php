@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class DocCate extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'category_id',
+        'document_id',
+    ];
+
     public function Document()
     {
         return $this->belongsTo('Document::class');

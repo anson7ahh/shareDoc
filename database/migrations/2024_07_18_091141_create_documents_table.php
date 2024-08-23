@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
             $table->string('format');
-            $table->string('content');
             $table->string('source')->nullable();
             $table->integer('point')->nullable();
             $table->string('description')->nullable();
@@ -26,7 +25,6 @@ return new class extends Migration
             $table->enum('favorite', DocumentFavoriteEnum::getValues())->default(DocumentFavoriteEnum::no);
             $table->unsignedBigInteger('users_id');
             $table->timestamps();
-
             $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade')
                 ->onUpdate('cascade');
         });

@@ -17,30 +17,32 @@ class Document extends Model
         'point',
         'description',
         'format',
-        'content'
+        'status',
+        'favorite',
+        'users_id',
     ];
 
     protected $casts = [
         'status' => DocumentStatusEnum::class,
         'favorite' => DocumentFavoriteEnum::class,
     ];
-    public function User()
+    public function user()
     {
         return $this->belongsTo('User::class');
     }
-    public function Download()
+    public function download()
     {
         return $this->hasMany('Download::class');
     }
-    public function HistoryDownload()
+    public function historyDownload()
     {
         return $this->hasMany('HistoryDownload::class');
     }
-    public function DocCate()
+    public function docCate()
     {
         return $this->hasmany('DocCate::class');
     }
-    public function DocTag()
+    public function docTag()
     {
         return $this->hasmany('DocTag::class');
     }
