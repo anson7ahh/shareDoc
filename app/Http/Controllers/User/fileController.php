@@ -11,12 +11,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-
 use App\Services\File\FileService;
 use Illuminate\Database\Eloquent\Builder;
 use App\Services\Category\CategoryService;
 
-class fileController extends Controller
+class FileController extends Controller
 {
     protected $FileService;
     protected $CategoryService;
@@ -39,8 +38,6 @@ class fileController extends Controller
      */
     public function create(Request $request)
     {
-
-        return $this->FileService->CreateDocument($request);
     }
 
     /**
@@ -48,6 +45,7 @@ class fileController extends Controller
      */
     public function store(Request $request)
     {
+
         return  $this->FileService->checkFile($request);
     }
 
@@ -70,9 +68,10 @@ class fileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $document_id)
     {
-        //
+
+        return $this->FileService->updateDocument($request, $document_id);
     }
 
     /**

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticateProviderController;
-use App\Http\Controllers\User\fileController;
+use App\Http\Controllers\User\FileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,10 +29,10 @@ Route::get('/', function () {
 })->name('home');
 
 Route::prefix('/upload')->group(function () {
-    Route::get('/', [fileController::class, 'index']);
-    Route::post('/{name}', [fileController::class, 'store'])->name('upload.store');
-    Route::get('/{id}', [fileController::class, 'show'])->name('upload.show');
-    Route::post('/', [fileController::class, 'create'])->name('upload.create');
+    Route::get('/', [FileController::class, 'index']);
+    Route::post('/', [FileController::class, 'store'])->name('upload.store');
+    Route::get('/{id}', [FileController::class, 'show'])->name('upload.show');
+    Route::post('/{document_id}', [FileController::class, 'update']);
 });
 
 

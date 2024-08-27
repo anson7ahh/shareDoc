@@ -2,8 +2,9 @@
 
 namespace App\Repositories\Document;
 
-use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\Document;
+use Illuminate\Support\Arr;
+use LaravelEasyRepository\Implementations\Eloquent;
 
 class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
 {
@@ -21,18 +22,28 @@ class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
     }
 
 
-    public function checkFileExists($title, $user_id)
+    public function checkFileExists(string $slug, int $user_id)
     {
-        return
-            $this->model->where('title', $title)
+        $findFile = $this->model->where('content', $slug)
             ->where('users_id', $user_id)
             ->where('status', 'notreviewed')
             ->first();
+        return $findFile ? $findFile : null;
     }
-
 
     public function createDocument(array $data): Document
     {
-        return $this->model->create($data);
+        $filteredData = Arr::only($data, ['content', 'format', 'users_id']);
+        return $this->model->create($filteredData);
+    }
+
+    public function updateDocument(array $data, int $document_id): Document
+    {
+        $document = $this->model->find($document_id);
+        if ($document) {
+            $document->update($data);
+            return $document;
+        }
+        return null;
     }
 }

@@ -1,11 +1,14 @@
+import { React, createContext, memo } from 'react';
+
 import Navbar from "@/Layouts/NavLayout";
 import UploadLayout from "@/Layouts/UploadLayout";
-import { createContext } from "react";
 
-export const CategoriesParentContext = createContext([])
+export const CategoriesParentContext = createContext();
 
-export default function Upload({ auth, categoriesParent }) {
-    console.log(typeof (categoriesParent))
+
+
+const Upload = ({ auth, categoriesParent }) => {
+    console.log(categoriesParent)
     return (
         <>
             <Navbar
@@ -20,3 +23,4 @@ export default function Upload({ auth, categoriesParent }) {
         </>
     );
 }
+export default memo(Upload)

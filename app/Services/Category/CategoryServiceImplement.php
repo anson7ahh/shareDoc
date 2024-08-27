@@ -37,9 +37,11 @@ class CategoryServiceImplement extends ServiceApi implements CategoryService
   public function getAllCategoryChildren($id)
   {
     $categoryChildren = $this->categoryRepository->allCategoryChildren($id);
-    if ($categoryChildren->isEmpty()) {
+
+    if ($categoryChildren === null) {
       return response()->json(['error' => 'Danh mục cha không tồn tại hoặc không có danh mục con'], 404);
     }
+
     return response()->json(['categoryChildren' => $categoryChildren], 200);
   }
 }

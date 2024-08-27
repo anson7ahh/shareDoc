@@ -1,6 +1,7 @@
+import FormUploadFile from "@/Components/FormUploadFileComponent";
 
-
-const Progress = ({ progress, children }) => {
+const Progress = ({ progress, data, id }) => {
+    console.log('status', data.status)
     return (
         <>
             {progress > 0 && (
@@ -17,9 +18,18 @@ const Progress = ({ progress, children }) => {
                 </div>
             )}
 
-            {progress == 100 && children}
+
+
+            {progress === 100 && (<>
+                <p> {data.message}</p>
+                {data.status === 'success' &&
+                    (<>
+                        <FormUploadFile id={id} />
+                    </>)}
+
+            </>)}
+
         </>
     );
 }
-
 export default Progress;

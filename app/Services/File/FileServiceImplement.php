@@ -49,66 +49,68 @@ class FileServiceImplement extends ServiceApi implements FileService
       if ($request->hasFile('file')) {
         $file = $request->file('file');
         $title = $file->getClientOriginalName();
-        $checkFiles = $this->documentRepository->checkFileExists($title, $user->id);
-        if (!$checkFiles) {
-          return response()->json(['status' => 'success', 'message' => 'File được tải lên thành công.'], 200);
-        } else {
-          return response()->json(['status' => 'error', 'message' => 'File của bạn có tên trùng với file đang chờ xét duyệt.'], 400);
+        $slug = Str::slug($title);
+        $format = $file->getClientOriginalExtension();
+        $checkFiles = $this->documentRepository->checkFileExists($slug, $user->id);
+        if ($checkFiles === null) {
+          $newDocument = $this->documentRepository->createDocument([
+            'content' => $slug,
+            'format' => $format,
+            'users_id' => $user->id
+          ]);
+          $documentId  = $newDocument->id;
+          return response()->json([
+            'status' => 'success', 'message' => 'File được tải lên thành công.',
+            'documentId' => $documentId
+          ], 206);
         }
-        // return response()->json(['status' => 'success', 'message' => 'File được tải lên thành công.'], 200);
+        return response()->json(['status' => 'error', 'message' => 'File của bạn có tên trùng với file đang chờ xét duyệt.'], 200);
       } else {
         return response()->json(['status' => 'error', 'message' => 'File không được tìm thấy.'], 404);
       }
     } catch (\Exception $e) {
       Log::error('Lỗi trong quá trình upload file: ' . $e->getMessage());
-      return response()->json(['status' => 'error', 'message' => 'Đã xảy ra lỗi. Vui lòng thử lại sau.']);
+      return response()->json(['status' => 'error', 'message' => 'Đã xảy ra lỗi. Vui lòng thử lại sau.'], 500);
     }
   }
 
-  public function CreateDocument(Request $request)
+  public function updateDocument(Request $request, int $document_id)
   {
     try {
-      $userId = Auth::id();
+
+      $title = $request->input('title');
       $description = $request->input('description');
       $source = $request->input('source');
       $point = $request->input('point');
+      $slug = Str::slug($title);
       $categoryChildentId = $request->input('category_id');
-      if ($request->hasFile('file')) {
-        $file = $request->file('file');
-        $format = $file->getClientOriginalExtension();
-        $title = $file->getClientOriginalName();
 
-        $slug = Str::slug($title);
-        Storage::disk('local')->put('public/file/' . $slug, $file);
-        // $file->storeAs('upload', $slug);
-        // Lưu document
-        $newDocument = $this->documentRepository->createDocument([
-          'title' => $title,
-          'slug' => $slug,
-          'description' => $description,
-          'format' => $format,
-          'source' => $source,
-          'point' => $point,
-          'users_id' => $userId
-        ]);
-        // Lưu danh mục tài liệu
+      // Kiểm tra dữ liệu đầu vào
+      if (!$title) {
+        return response()->json(['status' => 'error', 'message' => 'Dữ liệu đầu vào không hợp lệ.', 'data' =>
+        $request->all()], 400);
+      }
+
+      $updateDocument = $this->documentRepository->updateDocument([
+        'title' => $title,
+        'slug' => $slug,
+        'description' => $description,
+        'source' => $source,
+        'point' => $point,
+        'category_id' => $categoryChildentId,
+      ], $document_id);
+
+      if ($updateDocument) {
         $this->docCateRepository->createDocCate([
           'category_id' => $categoryChildentId,
-          'document_id' => $newDocument->id,
-
+          'document_id' => $updateDocument->id,
         ]);
-        return back()->with([
-          'success' => 'Tải lên file thành công. Chờ Admin duyệt!'
-        ]);
+        return response()->json(['status' => 'success', 'message' => 'Tải lên thành công.', 'document' => $updateDocument], 200);
       }
-      return back()->with([
-        'error' => 'Tải lên không thành công. Vui lòng kiểm tra file và thử lại.'
-      ]);
+      return response()->json(['status' => 'error', 'message' => 'Tài liệu không tồn tại.'], 404);
     } catch (\Exception $e) {
-      Log::error('Lỗi khi tải lên file: ' . $e->getMessage());
-      return back()->with([
-        'error' => 'Đã xảy ra lỗi trong quá trình tải lên. Vui lòng thử lại sau.'
-      ]);
+      Log::error('Lỗi khi cập nhật tài liệu: ' . $e->getMessage());
+      return response()->json(['status' => 'error', 'message' => 'Lỗi nội bộ server.'], 500);
     }
   }
 }

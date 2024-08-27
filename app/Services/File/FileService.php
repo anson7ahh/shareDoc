@@ -9,5 +9,5 @@ interface FileService extends BaseService
 {
 
     public function checkFile(Request $request);
-    public function CreateDocument(Request $request);
+    public function updateDocument(Request $request, int $document_id);
 }

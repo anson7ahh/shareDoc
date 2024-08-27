@@ -14,17 +14,16 @@ class Document extends Model
         'title',
         'slug',
         'source',
+        'content',
         'point',
         'description',
         'format',
+        'view',
         'status',
-        'favorite',
         'users_id',
     ];
-
     protected $casts = [
         'status' => DocumentStatusEnum::class,
-        'favorite' => DocumentFavoriteEnum::class,
     ];
     public function user()
     {
@@ -40,10 +39,14 @@ class Document extends Model
     }
     public function docCate()
     {
-        return $this->hasmany('DocCate::class');
+        return $this->hasMany('DocCate::class');
     }
     public function docTag()
     {
-        return $this->hasmany('DocTag::class');
+        return $this->hasMany('DocTag::class');
+    }
+    public function favorite()
+    {
+        return $this->hasMany('DocTag::class');
     }
 }

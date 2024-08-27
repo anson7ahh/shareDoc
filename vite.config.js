@@ -6,10 +6,18 @@ export default defineConfig({
     plugins: [
         laravel({
             input: 'resources/js/app.jsx',
-
-
-            refresh: true,
+            refresh: ['resources/views/**'],
         }),
         react(),
+
     ],
+    server: {
+        open: true, // Mở trình duyệt tự động khi chạy
+        hmr: {
+            host: 'localhost', // Hoặc địa chỉ IP của bạn
+        },
+        watch: {
+            usePolling: true
+        }
+    },
 });

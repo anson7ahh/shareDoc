@@ -1,6 +1,6 @@
 import { memo, useCallback, useContext, useEffect } from "react";
 
-import CategoriesParentContext from "@/Pages/User/Upload";
+import { CategoriesParentContext } from "@/Pages/User/Upload";
 import axios from "axios";
 import { useForm } from "@inertiajs/react";
 
@@ -14,7 +14,6 @@ function Category({ handleSetCategory }) {
 
     });
     const categoriesParent = useContext(CategoriesParentContext)
-    console.log(categoriesParent)
     const handleChangeCategoryParent = (e) => {
         setData("categoryParent", e.target.value);
     };
