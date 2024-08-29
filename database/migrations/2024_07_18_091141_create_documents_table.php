@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('slug')->nullable();
             $table->string('format');
             $table->string('content');
-            $table->integer('view');
+            $table->integer('view')->default(0);
             $table->string('source')->nullable();
             $table->integer('point')->nullable();
             $table->string('description')->nullable();

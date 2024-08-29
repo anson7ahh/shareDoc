@@ -32,7 +32,7 @@ Route::prefix('/upload')->group(function () {
     Route::get('/', [FileController::class, 'index']);
     Route::post('/', [FileController::class, 'store'])->name('upload.store');
     Route::get('/{id}', [FileController::class, 'show'])->name('upload.show');
-    Route::post('/{document_id}', [FileController::class, 'update']);
+    Route::patch('/{document_id}', [FileController::class, 'update']);
 });
 
 

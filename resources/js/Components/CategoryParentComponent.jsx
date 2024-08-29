@@ -135,7 +135,7 @@ function Category({ handleSetCategory }) {
                     className="border border-gray-300 p-2 rounded"
                     placeholder="Chọn danh mục"
                     onChange={handleChangeCategoryGrandChild}
-                    value={data.selectedCategoryGrandChild} // Đồng bộ giá trị
+                    value={data.selectedCategoryGrandChild}
                 >
                     <option value="">Chọn danh mục cháu</option>
                     {data.categoryGrandChildren.map((categoryGrandChild) => (

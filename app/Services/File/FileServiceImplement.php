@@ -45,16 +45,16 @@ class FileServiceImplement extends ServiceApi implements FileService
   public function checkFile(Request $request)
   {
     try {
-      $user = Auth::user();
       if ($request->hasFile('file')) {
+        $user = Auth::user();
         $file = $request->file('file');
         $title = $file->getClientOriginalName();
-        $slug = Str::slug($title);
+        $content = Str::slug($title);
         $format = $file->getClientOriginalExtension();
-        $checkFiles = $this->documentRepository->checkFileExists($slug, $user->id);
+        $checkFiles = $this->documentRepository->checkFileExists($content, $user->id);
         if ($checkFiles === null) {
           $newDocument = $this->documentRepository->createDocument([
-            'content' => $slug,
+            'content' => $content,
             'format' => $format,
             'users_id' => $user->id
           ]);
@@ -70,7 +70,11 @@ class FileServiceImplement extends ServiceApi implements FileService
       }
     } catch (\Exception $e) {
       Log::error('Lỗi trong quá trình upload file: ' . $e->getMessage());
-      return response()->json(['status' => 'error', 'message' => 'Đã xảy ra lỗi. Vui lòng thử lại sau.'], 500);
+      return response()->json([
+        'status' => 'error',
+        'message' => 'Đã xảy ra lỗi. Vui lòng thử lại sau.',
+        'error' => $e->getMessage()
+      ], 500);
     }
   }
 

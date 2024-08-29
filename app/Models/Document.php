@@ -21,6 +21,7 @@ class Document extends Model
         'view',
         'status',
         'users_id',
+
     ];
     protected $casts = [
         'status' => DocumentStatusEnum::class,
@@ -47,6 +48,6 @@ class Document extends Model
     }
     public function favorite()
     {
-        return $this->hasMany('DocTag::class');
+        return $this->hasMany('favorite::class');
     }
 }

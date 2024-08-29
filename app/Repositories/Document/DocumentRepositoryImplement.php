@@ -22,9 +22,9 @@ class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
     }
 
 
-    public function checkFileExists(string $slug, int $user_id)
+    public function checkFileExists(string $content, int $user_id)
     {
-        $findFile = $this->model->where('content', $slug)
+        $findFile = $this->model->where('content', $content)
             ->where('users_id', $user_id)
             ->where('status', 'notreviewed')
             ->first();
