@@ -38,10 +38,10 @@ class CategoryServiceImplement extends ServiceApi implements CategoryService
   {
     $categoryChildren = $this->categoryRepository->allCategoryChildren($id);
 
-    if ($categoryChildren === null) {
-      return response()->json(['error' => 'Danh mục cha không tồn tại hoặc không có danh mục con'], 404);
+    if ($categoryChildren !== null) {
+      return response()->json(['categoryChildren' => $categoryChildren], 200);
     }
 
-    return response()->json(['categoryChildren' => $categoryChildren], 200);
+    return response()->json(['error' => 'Danh mục cha không tồn tại hoặc không có danh mục con'], 404);
   }
 }

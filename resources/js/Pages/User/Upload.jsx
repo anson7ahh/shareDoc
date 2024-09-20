@@ -1,14 +1,10 @@
-import { React, createContext, memo } from 'react';
+import { memo, useEffect } from 'react';
 
 import Navbar from "@/Layouts/NavLayout";
 import UploadLayout from "@/Layouts/UploadLayout";
 
-export const CategoriesParentContext = createContext();
+const Upload = ({ auth }) => {
 
-
-
-const Upload = ({ auth, categoriesParent }) => {
-    console.log(categoriesParent)
     return (
         <>
             <Navbar
@@ -17,9 +13,9 @@ const Upload = ({ auth, categoriesParent }) => {
                 showMenu={false}
                 showUpload={false}
             />
-            <CategoriesParentContext.Provider value={categoriesParent}>
-                <UploadLayout />
-            </CategoriesParentContext.Provider>
+
+            <UploadLayout />
+
         </>
     );
 }

@@ -14,7 +14,7 @@ const Dropdown = ({ children }) => {
 
     return (
         <DropDownContext.Provider value={{ open, setOpen, toggleOpen }}>
-            <div className="relative">{children}</div>
+            <div className="relative ">{children}</div>
         </DropDownContext.Provider>
     );
 };
@@ -31,7 +31,7 @@ const Trigger = ({ children }) => {
     );
 };
 
-const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-white', children }) => {
+const Content = ({ align = 'right', className = ``, contentClasses = 'py-1 bg-white', children }) => {
     const { open, setOpen } = useContext(DropDownContext);
 
     let alignmentClasses = 'origin-top';
@@ -42,11 +42,11 @@ const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-whit
         alignmentClasses = 'ltr:origin-top-right rtl:origin-top-left end-0';
     }
 
-    let widthClasses = '';
+    // let className = '';
 
-    if (width === '48') {
-        widthClasses = 'w-48';
-    }
+    // if (width === '48') {
+    //     className = 'w-48';
+    // }
 
     return (
         <>
@@ -61,10 +61,13 @@ const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-whit
                 leaveTo="opacity-0 scale-95"
             >
                 <div
-                    className={`absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
+                    className={`absolute z-50 mt-2 rounded-md shadow-lg w-auto h-auto ${alignmentClasses} ${className}`}
+
                     onClick={() => setOpen(false)}
                 >
-                    <div className={`rounded-md ring-1 ring-black ring-opacity-5 ` + contentClasses}>{children}</div>
+                    <div className={`rounded-md ring-1 ring-black ring-opacity-5` + contentClasses}>
+                        {children}
+                    </div>
                 </div>
             </Transition>
         </>
@@ -80,7 +83,6 @@ const DropdownLink = ({ className = '', children, ...props }) => {
                 className
             }
         >
-
             {children}
         </Link>
     );

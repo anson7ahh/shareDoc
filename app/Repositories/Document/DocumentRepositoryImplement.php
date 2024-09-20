@@ -2,6 +2,8 @@
 
 namespace App\Repositories\Document;
 
+use Carbon\Carbon;
+
 use App\Models\Document;
 use Illuminate\Support\Arr;
 use LaravelEasyRepository\Implementations\Eloquent;
@@ -45,5 +47,11 @@ class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
             return $document;
         }
         return null;
+    }
+    public function featuredDocument()
+    {
+        $oneWeekAgo = Carbon::now()->subWeek();
+        $documents = $this->model::where('created_at', '>=', $oneWeekAgo)->orderBy('view', 'asc')->get();
+        return $documents;
     }
 }

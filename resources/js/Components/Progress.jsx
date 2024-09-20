@@ -1,7 +1,8 @@
-import FormUploadFile from "@/Components/FormUploadFileComponent";
+import FormUploadFile from '@/Layouts/FormUploadFileLayout';
+import React from 'react';
 
-const Progress = ({ progress, data, id }) => {
-    console.log('status', data.status)
+const Progress = ({ progress, status, message }) => {
+
     return (
         <>
             {progress > 0 && (
@@ -18,18 +19,16 @@ const Progress = ({ progress, data, id }) => {
                 </div>
             )}
 
-
-
-            {progress === 100 && (<>
-                <p> {data.message}</p>
-                {data.status === 'success' &&
-                    (<>
-                        <FormUploadFile id={id} />
-                    </>)}
-
-            </>)}
-
+            {progress === 100 && (
+                <>
+                    <p>{message}</p>
+                    {status == 'success' && (
+                        <FormUploadFile />
+                    )}
+                </>
+            )}
         </>
     );
-}
+};
+
 export default Progress;

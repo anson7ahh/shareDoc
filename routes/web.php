@@ -5,8 +5,9 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Auth\AuthenticateProviderController;
 use App\Http\Controllers\User\FileController;
+use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\Auth\AuthenticateProviderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,21 +19,31 @@ use App\Http\Controllers\User\FileController;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         // 'canLogin' => Route::has('login'),
+//         // 'canRegister' => Route::has('register'),
+//         // 'laravelVersion' => Application::VERSION,
+//         // 'phpVersion' => PHP_VERSION,
 
-    ]);
-})->name('home');
+//     ]);
+// })->name('home');
+
+Route::prefix('/')->group(function () {
+    Route::get('/', [HomeController::class, 'index']);
+});
+Route::prefix('/upload')->group(function () {
+    Route::get('/', [FileController::class, 'index']);
+    Route::post('/', [FileController::class, 'store'])->name('upload.store');
+    Route::get('/{id}', [FileController::class, 'show'])->name('upload.show');
+    Route::post('/{document_id}', [FileController::class, 'update']);
+});
 
 Route::prefix('/upload')->group(function () {
     Route::get('/', [FileController::class, 'index']);
     Route::post('/', [FileController::class, 'store'])->name('upload.store');
     Route::get('/{id}', [FileController::class, 'show'])->name('upload.show');
-    Route::patch('/{document_id}', [FileController::class, 'update']);
+    Route::post('/{document_id}', [FileController::class, 'update']);
 });
 
 

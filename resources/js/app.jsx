@@ -1,9 +1,11 @@
 import "../css/app.css";
 
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from 'react-redux'
 import { createInertiaApp } from "@inertiajs/react";
 import { createRoot } from "react-dom/client";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
+import store from "@/redux/Store";
 
 const appName = import.meta.env.VITE_APP_NAME || "Share Doc Study";
 
@@ -18,9 +20,13 @@ createInertiaApp({
         const root = createRoot(el);
 
         root.render(
+
             <BrowserRouter>
-                <App {...props} />
+                <Provider store={store}>
+                    <App {...props} />
+                </Provider>,
             </BrowserRouter>
+
         );
     },
     progress: {

@@ -3,6 +3,7 @@ import "../../css/app.css";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import Authenticated from "./AuthenticatedLayout";
 import { Link } from "@inertiajs/react";
+import MenuButton from "@/Components/ButtonMenuComponent";
 import React from "react";
 import UploadButton from "@/Components/ButtonUploadComponent";
 
@@ -21,8 +22,8 @@ export default function Navbar({
                         <ApplicationLogo className="h-10 w-auto fill-current text-gray-800 dark:text-white" />
                     </Link>
                 </div>
-                <div>
-                    <div className={showSearchBar ? "" : "invisible"}>Menu</div>
+                <div className="" >
+                    <div className={showMenu ? "" : "invisible"}><MenuButton /></div>
                 </div>
                 <div className="flex items-center">
                     <div className={showSearchBar ? "" : "invisible"}>
@@ -38,7 +39,7 @@ export default function Navbar({
                         <UploadButton auth={auth.user} />
                     </div>
                 </div>
-                <div className="flex items-center ">
+                <div className="flex items-center z-50">
                     {auth.user ? (
                         <Authenticated
                             className={"flex items-center"}
