@@ -117,4 +117,7 @@ class FileServiceImplement extends ServiceApi implements FileService
       return response()->json(['status' => 'error', 'message' => 'Lỗi nội bộ server.'], 500);
     }
   }
+  public function getDocumentWithCate(int $id)
+  {
+  }
 }

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 
 use App\Models\Document;
 use Illuminate\Support\Arr;
+use App\Builders\FileBuilder;
 use LaravelEasyRepository\Implementations\Eloquent;
 
 class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
@@ -24,21 +25,25 @@ class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
     }
 
 
-    public function checkFileExists(string $content, int $user_id)
+    public function checkFileExists($content, $user_id)
     {
-        $findFile = $this->model->where('content', $content)
-            ->where('users_id', $user_id)
-            ->where('status', 'notreviewed')
+        $fileQueryBuilder = new FileBuilder(new Document());
+        $findFile = $fileQueryBuilder
+            ->whereContent($content)
+            ->whereUserId($user_id)
+            ->whereStatus('notreviewed')
             ->first();
+
         return $findFile ? $findFile : null;
     }
-
-    public function createDocument(array $data): Document
+    public function createDocument(array $data)
     {
-        $filteredData = Arr::only($data, ['content', 'format', 'users_id']);
-        return $this->model->create($filteredData);
+        $fileBuilder = new FileBuilder(new Document());
+        $document = $fileBuilder
+            ->filterData($data)
+            ->create(Document::class);
+        return $document;
     }
-
     public function updateDocument(array $data, int $document_id): Document
     {
         $document = $this->model->find($document_id);
@@ -51,7 +56,7 @@ class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
     public function featuredDocument()
     {
         $oneWeekAgo = Carbon::now()->subWeek();
-        $documents = $this->model::where('created_at', '>=', $oneWeekAgo)->orderBy('view', 'asc')->get();
+        $documents = $this->model->where('created_at', '>=', $oneWeekAgo)->orderBy('view', 'asc')->get();
         return $documents;
     }
 }

@@ -31,6 +31,7 @@ function CategoryParent({ }) {
                     id="categoryParent"
                     onChange={handleChangeCategoryParent}
                     value={categoryParentId}
+                    required
                 >
                     <option value="">Chọn danh mục</option>
                     {categoriesParent.map((categoryParent) => (

@@ -4,19 +4,19 @@ import "slick-carousel/slick/slick-theme.css";
 import React from "react";
 import Slider from "react-slick";
 
-export default function CarouselComponent({ img, setting, className = "", classNameImg = "" }) {
+export default function CarouselComponent({ img, setting, classNameImg }) {
     const settings = {
         ...setting,
     };
 
     return (
-        <div className={"" + className}  >
+        <>
             <Slider {...settings}>
                 {img.map((img, index) => (
-                    <img className={"" + classNameImg} key={index} src={`/storage/img/${img}`} alt={`Banner ${index + 1}`} />
+                    <img className={`${classNameImg}`} key={index} src={`/storage/img/${img}`} alt={`Banner ${index + 1}`} />
 
                 ))}
             </Slider>
-        </div >
+        </ >
     );
 }

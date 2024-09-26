@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Category;
 
+use App\Builders\CateBuilder;
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\Category;
 
@@ -22,11 +23,23 @@ class CategoryRepositoryImplement extends Eloquent implements CategoryRepository
 
     public function allRootCategory()
     {
-        return $this->model::roots()->get();
+        return $this->model::roots()->select('id', 'name', 'parent_id')->get();
     }
     public function allCategoryChildren($id)
     {
         $categoryParent = $this->find($id);
         return $categoryParent ? $categoryParent->children()->get() : null;
+    }
+    public function checkCategory($id)
+    {
+        $queryBuilder = new CateBuilder();
+        $results =  $queryBuilder
+            ->joinDocCates()
+            ->joinDocuments()
+            ->selectFields()
+            ->get();
+
+        $category = $results->find($id);
+        return $category ? $category : null;
     }
 }

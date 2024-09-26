@@ -31,6 +31,7 @@ use App\Http\Controllers\Auth\AuthenticateProviderController;
 
 Route::prefix('/')->group(function () {
     Route::get('/', [HomeController::class, 'index']);
+    // Route::get('/{id}', [HomeController::class, 'store']);
 });
 Route::prefix('/upload')->group(function () {
     Route::get('/', [FileController::class, 'index']);
@@ -39,12 +40,7 @@ Route::prefix('/upload')->group(function () {
     Route::post('/{document_id}', [FileController::class, 'update']);
 });
 
-Route::prefix('/upload')->group(function () {
-    Route::get('/', [FileController::class, 'index']);
-    Route::post('/', [FileController::class, 'store'])->name('upload.store');
-    Route::get('/{id}', [FileController::class, 'show'])->name('upload.show');
-    Route::post('/{document_id}', [FileController::class, 'update']);
-});
+
 
 
 

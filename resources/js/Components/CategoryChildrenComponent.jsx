@@ -1,10 +1,8 @@
 import { memo, useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
 
 import axios from "axios";
-import {
-    setCategoryId
-} from '@/redux/FileSlice';
+import { setCategoryId } from '@/redux/FileSlice';
+import { useDispatch } from 'react-redux';
 
 function CategoryChildren({ categoryParentId }) {
     const dispatch = useDispatch();
@@ -13,7 +11,6 @@ function CategoryChildren({ categoryParentId }) {
 
     useEffect(() => {
         if (categoryParentId) {
-            // Mỗi khi parentId thay đổi, reset dữ liệu trước
             setCategoryChildren([]);
             setCategoryChildId(null);
 
@@ -48,6 +45,7 @@ function CategoryChildren({ categoryParentId }) {
                     placeholder="Chọn danh mục con"
                     value={categoryChildId || ""}
                     onChange={handleChangeCategoryChild}
+                    required
                 >
                     <option value="">Chọn danh mục con</option>
                     {categoryChildren.map((categoryChild) => (

@@ -18,8 +18,13 @@ class HomeController extends Controller
     public function index()
     {
         $categoriesParent = $this->CategoryService->getAllRootCategory();
+
         return Inertia::render('Home', [
-            'categoriesParent' => $categoriesParent
+            'categoriesParent' => $categoriesParent,
+
         ]);
+    }
+    public function show($id)
+    {
     }
 }

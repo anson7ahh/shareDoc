@@ -25,7 +25,7 @@ export default function Authenticated({ className = "", user }) {
                         </button>
                     </span>
                 </Dropdown.Trigger>
-                <Dropdown.Content className="w-[120px]">
+                <Dropdown.Content className="w-48">
                     <Dropdown.Link href={route("profile.edit")}>
                         Profile
                     </Dropdown.Link>

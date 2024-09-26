@@ -14,7 +14,7 @@ const Dropdown = ({ children }) => {
 
     return (
         <DropDownContext.Provider value={{ open, setOpen, toggleOpen }}>
-            <div className="relative ">{children}</div>
+            <div className="relative">{children}</div>
         </DropDownContext.Provider>
     );
 };
@@ -26,27 +26,22 @@ const Trigger = ({ children }) => {
         <>
             <div onClick={toggleOpen}>{children}</div>
 
-            {open && <div className="fixed inset-0 z-40" onClick={() => setOpen(false)}></div>}
+            {open && <div className="fixed inset-0 " onClick={() => setOpen(false)}></div>}
         </>
     );
 };
 
-const Content = ({ align = 'right', className = ``, contentClasses = 'py-1 bg-white', children }) => {
+const Content = ({ align = 'right', className=``, contentClasses = 'py-1 bg-white', children }) => {
     const { open, setOpen } = useContext(DropDownContext);
 
     let alignmentClasses = 'origin-top';
 
     if (align === 'left') {
-        alignmentClasses = 'ltr:origin-top-left rtl:origin-top-right start-0';
+        alignmentClasses = 'ltr:origin-top-left rtl:origin-top-right start-0 ';
     } else if (align === 'right') {
         alignmentClasses = 'ltr:origin-top-right rtl:origin-top-left end-0';
     }
 
-    // let className = '';
-
-    // if (width === '48') {
-    //     className = 'w-48';
-    // }
 
     return (
         <>
@@ -61,15 +56,15 @@ const Content = ({ align = 'right', className = ``, contentClasses = 'py-1 bg-wh
                 leaveTo="opacity-0 scale-95"
             >
                 <div
-                    className={`absolute z-50 mt-2 rounded-md shadow-lg w-auto h-auto ${alignmentClasses} ${className}`}
-
+                    className={`absolute z-50 mt-2 rounded-md shadow-lg w-auto h-auto ${alignmentClasses} 
+                    ${className}`}
                     onClick={() => setOpen(false)}
                 >
-                    <div className={`rounded-md ring-1 ring-black ring-opacity-5` + contentClasses}>
+                    <div className={`rounded-md ring-1 ring-black ring-opacity-5 ${contentClasses}`} >
                         {children}
                     </div>
                 </div>
-            </Transition>
+            </Transition >
         </>
     );
 };
