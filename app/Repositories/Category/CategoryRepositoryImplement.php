@@ -30,16 +30,20 @@ class CategoryRepositoryImplement extends Eloquent implements CategoryRepository
         $categoryParent = $this->find($id);
         return $categoryParent ? $categoryParent->children()->get() : null;
     }
-    public function checkCategory($id)
+    public function DocCate($id)
     {
         $queryBuilder = new CateBuilder();
         $results =  $queryBuilder
             ->joinDocCates()
             ->joinDocuments()
             ->selectFields()
+            ->where('categories.id', '=', $id)
             ->get();
-
-        $category = $results->find($id);
+        return $results;
+    }
+    public function findCategory($id)
+    {
+        $category = $this->model->find($id);
         return $category ? $category : null;
     }
 }

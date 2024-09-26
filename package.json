@@ -20,6 +20,10 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "@emotion/react": "^11.13.3",
+        "@emotion/styled": "^11.13.0",
+        "@mui/material": "^6.1.1",
+        "@mui/styled-engine-sc": "^6.1.1",
         "@mui/x-tree-view": "^7.14.0",
         "@reduxjs/toolkit": "^2.2.7",
         "class-variance-authority": "^0.7.0",
@@ -29,6 +33,7 @@
         "react-router-dom": "^6.25.1",
         "react-slick": "^0.30.2",
         "slick-carousel": "^1.8.1",
+        "styled-components": "^6.1.13",
         "tailwind-merge": "^2.5.2",
         "tailwindcss-animate": "^1.0.7"
     }

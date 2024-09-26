@@ -30,7 +30,7 @@ class CateBuilder
 
     public function selectFields()
     {
-        $this->query->select('categories.name', 'documents.title');
+        $this->query->select('categories.name', 'documents.title', 'documents.id');
         return $this;
     }
 

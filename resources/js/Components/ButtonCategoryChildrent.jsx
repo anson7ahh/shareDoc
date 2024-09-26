@@ -8,7 +8,7 @@ function CategoryChildren({ id }) {
     const [categoryChildren, setCategoryChildren] = useState([]);
     const [categoryChildId, setCategoryChildId] = useState(null);
     const [hoveredCategory, setHoveredCategory] = useState(null);
-    console.log('categoryChildren23123', categoryChildren)
+    
     useEffect(() => {
         if (id) {
             setCategoryChildren([]);

@@ -9,5 +9,6 @@ interface CategoryRepository extends Repository
 
     public function allRootCategory();
     public function allCategoryChildren($id);
-    public function checkCategory($id);
+    public function DocCate($id);
+    public function findCategory($id);
 }
