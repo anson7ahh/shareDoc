@@ -1,7 +1,6 @@
 import { setFile, uploadFile } from '@/redux/FileSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
-import FooterLayout from './FooterLayout';
 import Progress from '@/Components/Progress';
 import React from 'react';
 import { memo } from 'react';
@@ -55,7 +54,7 @@ const UploadLayout = () => {
                 </div>
 
                 <Progress progress={progress} status={uploadStatus} message={message} />
-                <FooterLayout />
+
             </div>
         </div>
     );

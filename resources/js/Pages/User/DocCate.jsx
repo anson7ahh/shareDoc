@@ -1,22 +1,32 @@
-import { memo, useEffect } from 'react';
-
+import BasicBreadcrumbs from '@/Components/BreadcrumdComponent';
+import FooterLayout from '@/Layouts/FooterLayout';
 import Navbar from "@/Layouts/NavLayout";
+import PageLayout from '@/Layouts/PageLayout';
+import { memo } from 'react';
 
-const DocCate = ({ auth, AncestorsAndSelf, getDocWithCate }) => {
-    console.log('AncestorsAndSelf', AncestorsAndSelf)
-    console.log('getDocWithCate', getDocWithCate)
+const DocCate = ({ auth, AncestorsAndSelf, paginatedItems }) => {
+    const originalPaginatedItems = paginatedItems?.original?.paginatedItems;
     return (
         <>
-            <Navbar
-                auth={auth}
-                showSearchBar={false}
-                showMenu={false}
-                showUpload={false}
-            />
+            <header>
+                <Navbar
+                    auth={auth}
+                    showSearchBar={false}
+                    showMenu={false}
+                    showUpload={false}
+                />
+            </header>
+            <div className='pt-[100px] mx-40 bg-gray-200'>
+                <div>
+                    <BasicBreadcrumbs AncestorsAndSelf={AncestorsAndSelf} />
+                </div>
+                <div>
+                    <PageLayout data={originalPaginatedItems} />
+                </div>
 
-
-
+            </div>
+            <FooterLayout />
         </>
     );
 }
-export default memo(DocCate)
+export default memo(DocCate);

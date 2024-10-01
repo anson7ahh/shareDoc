@@ -27,10 +27,12 @@ class HomeController extends Controller
     public function show($id)
     {
         $AncestorsAndSelf = $this->CategoryService->getRoot($id);
-        $getDocWithCate = $this->CategoryService->getDocWithCate($id);
+        $paginatedItems = $this->CategoryService->getDocWithCate($id);
+
         return Inertia::render('User/DocCate', [
             'AncestorsAndSelf' => $AncestorsAndSelf,
-            'getDocWithCate' => $getDocWithCate,
+            'paginatedItems' => $paginatedItems,
+
         ]);
     }
 }

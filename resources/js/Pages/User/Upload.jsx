@@ -1,7 +1,7 @@
-import { memo, useEffect } from 'react';
-
+import FooterLayout from '@/Layouts/FooterLayout';
 import Navbar from "@/Layouts/NavLayout";
 import UploadLayout from "@/Layouts/UploadLayout";
+import { memo } from 'react';
 
 const Upload = ({ auth }) => {
 
@@ -15,7 +15,7 @@ const Upload = ({ auth }) => {
             />
 
             <UploadLayout />
-
+            <FooterLayout />
         </>
     );
 }

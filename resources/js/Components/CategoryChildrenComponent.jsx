@@ -13,14 +13,11 @@ function CategoryChildren({ categoryParentId }) {
         if (categoryParentId) {
             setCategoryChildren([]);
             setCategoryChildId(null);
-
             const fetchCategoryChildren = async () => {
                 try {
                     const response = await axios.get(`upload/${categoryParentId}`);
-                    console.log("Dữ liệu danh mục con:", response.data);
                     setCategoryChildren(response.data.categoryChildren);
                 } catch (error) {
-                    console.error("Có lỗi xảy ra khi lấy danh mục con:", error);
                     setCategoryChildren([]);
                 }
             };

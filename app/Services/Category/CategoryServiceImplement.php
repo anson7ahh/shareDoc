@@ -3,6 +3,7 @@
 namespace App\Services\Category;
 
 use LaravelEasyRepository\ServiceApi;
+use Illuminate\Pagination\LengthAwarePaginator;
 use App\Repositories\Category\CategoryRepository;
 
 class CategoryServiceImplement extends ServiceApi implements CategoryService
@@ -47,29 +48,56 @@ class CategoryServiceImplement extends ServiceApi implements CategoryService
   public function getRoot($id)
   {
     $category = $this->categoryRepository->findCategory($id);
+
     if ($category !== null) {
-      $parentCategory = $category->getAncestorsAndSelf('name', 'id') ? $category->getAncestorsAndSelf('name', 'id') : $category->name;
+      // Lấy tất cả tổ tiên và chính danh mục đang truy vấn, bao gồm các trường 'name' và 'id'
+      $parentCategory = $category->getAncestorsAndSelf(['name', 'id']);
+
       return response()->json(['parentCategory' => $parentCategory], 200);
     }
+
     return response()->json(['error' => 'Danh mục không tồn tại'], 404);
   }
+
   public function getDocWithCate($id)
   {
     $category = $this->categoryRepository->findCategory($id);
     if ($category === null) {
       return response()->json(['error' => 'Danh mục không tồn tại'], 404);
     }
+
+    // Nếu là leaf node
     if ($category->isLeaf()) {
-      $docCate = $this->categoryRepository->DocCate($id);
-      return response()->json(['docCate' => $docCate], 200);
+      $paginatedItems = $this->categoryRepository->paginateLeaf($id);
+      return response()->json(['paginatedItems' => $paginatedItems], 200);
     }
 
-    $ImmediateDescendants = $category->getDescendants();
+    // Lấy các leaves
+    $ImmediateDescendants = $category->getLeaves();
+    // Lấy mảng các ID của ImmediateDescendants
 
-    $docCate = collect($ImmediateDescendants)->flatMap(function ($ImmediateDescendant) {
-      return $this->categoryRepository->DocCate($ImmediateDescendant->id);
-    })->all();
 
-    return response()->json(['docCate' => $docCate], 200);
+    // Lấy dữ liệu đã làm phẳng và phân trang
+    $flattenedArray = $this->categoryRepository->paginate($ImmediateDescendants);
+
+    // Tạo đối tượng LengthAwarePaginator để phân trang
+    $currentPage = LengthAwarePaginator::resolveCurrentPage();
+    $perPage = 5;
+    $currentPageItems = $flattenedArray->forPage($currentPage, $perPage); // Lấy các mục cho trang hiện tại
+
+    $paginatedItems = new LengthAwarePaginator(
+      $currentPageItems, // Các mục cho trang hiện tại
+      $flattenedArray->count(), // Tổng số mục
+      $perPage, // Số mục trên mỗi trang
+      $currentPage, // Trang hiện tại
+      [
+        'path' => LengthAwarePaginator::resolveCurrentPath(), // Đường dẫn hiện tại
+        'query' => request()->query() // Giữ query params
+      ]
+    );
+
+    return response()->json([
+      'paginatedItems' => $paginatedItems, // Dữ liệu phân trang
+    ], 200);
   }
 }

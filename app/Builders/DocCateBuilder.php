@@ -2,31 +2,18 @@
 
 namespace App\Builders;
 
-use App\Models\Category;
+use App\Models\DocCate;
 
-class CateBuilder
+
+class DocCateBuilder
 {
     protected $query;
 
     public function __construct()
     {
-        $this->query = Category::query();
+        $this->query = DocCate::leftJoin('categories', 'categories.id', '=', 'doc_cates.category_id')
+            ->rightJoin('documents', 'documents.id', '=', 'doc_cates.document_id');
     }
-
-
-    public function joinDocCates()
-    {
-        $this->query->join('doc_cates', 'categories.id', '=', 'doc_cates.category_id');
-        return $this;
-    }
-
-
-    public function joinDocuments()
-    {
-        $this->query->join('documents', 'documents.id', '=', 'doc_cates.document_id');
-        return $this;
-    }
-
 
     public function selectFields()
     {
@@ -43,5 +30,9 @@ class CateBuilder
     public function get()
     {
         return $this->query->get();
+    }
+    public function paginate($page)
+    {
+        return $this->query->paginate($page);
     }
 }

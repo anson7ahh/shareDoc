@@ -8,7 +8,7 @@ function CategoryChildren({ id }) {
     const [categoryChildren, setCategoryChildren] = useState([]);
     const [categoryChildId, setCategoryChildId] = useState(null);
     const [hoveredCategory, setHoveredCategory] = useState(null);
-    
+
     useEffect(() => {
         if (id) {
             setCategoryChildren([]);
@@ -17,11 +17,8 @@ function CategoryChildren({ id }) {
             const fetchCategoryChildren = async () => {
                 try {
                     const response = await axios.get(`upload/${id}`);
-
                     setCategoryChildren(response.data.categoryChildren);
                     setHoveredCategory(null)
-
-
                 } catch (error) {
                     console.error("Có lỗi xảy ra khi lấy danh mục con:", error);
                     setCategoryChildren([]);
@@ -55,7 +52,7 @@ function CategoryChildren({ id }) {
                         key={categoryChild.id}
                         value={categoryChild.id}>
 
-                        <NavLink href={`${categoryChild.id}`}>
+                        <NavLink href={`doc-cat/${categoryChild.id}`}>
                             {categoryChild.name}
                         </NavLink>
 

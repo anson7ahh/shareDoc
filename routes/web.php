@@ -31,7 +31,7 @@ use App\Http\Controllers\Auth\AuthenticateProviderController;
 
 Route::prefix('/')->group(function () {
     Route::get('/', [HomeController::class, 'index']);
-    Route::get('/{id}', [HomeController::class, 'show']);
+    Route::get('doc-cat/{id}', [HomeController::class, 'show']);
 });
 Route::prefix('/upload')->group(function () {
     Route::get('/', [FileController::class, 'index']);

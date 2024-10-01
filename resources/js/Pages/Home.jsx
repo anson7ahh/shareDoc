@@ -2,7 +2,7 @@ import CarouselComponent from "@/Components/CarouselComponent";
 import Navbar from "@/Layouts/NavLayout";
 import { useEffect } from 'react';
 
-export default function Welcome({ auth, categoriesParent, allCategory }) {
+export default function Welcome({ auth, categoriesParent }) {
 
     useEffect(() => {
         if (categoriesParent) {

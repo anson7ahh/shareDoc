@@ -26,11 +26,14 @@ export default function Navbar({
 
                 {/* showmenu */}
 
-                <div className={showMenu ? "" : "invisible"}><MenuButton /></div>
+                <div className={showMenu ? "" : "invisible"}>
+
+
+                    <MenuButton />
+
+                </div>
 
                 {/* end show menu */}
-
-
 
                 <div className={showSearchBar ? "" : "invisible"}>
                     <input

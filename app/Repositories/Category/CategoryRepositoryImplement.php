@@ -2,11 +2,12 @@
 
 namespace App\Repositories\Category;
 
-use App\Builders\CateBuilder;
-use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\Category;
+use App\Builders\DocCateBuilder;
+use Illuminate\Pagination\LengthAwarePaginator;
+use LaravelEasyRepository\Implementations\Eloquent;
 
-class CategoryRepositoryImplement extends Eloquent implements CategoryRepository
+class CategoryRepositoryImplement extends Eloquent  implements CategoryRepository
 {
 
     /**
@@ -30,20 +31,38 @@ class CategoryRepositoryImplement extends Eloquent implements CategoryRepository
         $categoryParent = $this->find($id);
         return $categoryParent ? $categoryParent->children()->get() : null;
     }
-    public function DocCate($id)
+
+    //paginate with category leaf
+    public function paginateLeaf($id)
     {
-        $queryBuilder = new CateBuilder();
+        $queryBuilder = new DocCateBuilder();
         $results =  $queryBuilder
-            ->joinDocCates()
-            ->joinDocuments()
             ->selectFields()
             ->where('categories.id', '=', $id)
-            ->get();
+            ->paginate(10);
         return $results;
     }
     public function findCategory($id)
     {
         $category = $this->model->find($id);
         return $category ? $category : null;
+    }
+
+    public function paginate($ImmediateDescendants)
+    {
+        $docCate = [];
+        foreach ($ImmediateDescendants as $ImmediateDescendant) {
+            $queryBuilder = new DocCateBuilder();
+            $collection = $queryBuilder
+                ->selectFields()
+                ->where('categories.id', '=', $ImmediateDescendant->id)
+                ->get();
+            $docCate[] = $collection;
+        }
+
+        // Làm phẳng mảng
+        $flattenedArray = collect($docCate)->flatten();
+
+        return $flattenedArray;
     }
 }
