@@ -90,7 +90,7 @@ export default function FormUploadFile() {
                     <textarea
                         name="description"
                         id="description"
-
+                        required
                         onChange={handleChangeDescription}
                         placeholder="Mô tả chi tiết tài liệu của bạn."
                         className="border border-gray-300 p-2 rounded resize-none h-[120px]"
@@ -125,7 +125,7 @@ export default function FormUploadFile() {
 
                     <button
                         className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
-                        disabled={!title || !point}
+                        disabled={!title || !point || !description}
                         type="submit"
 
 

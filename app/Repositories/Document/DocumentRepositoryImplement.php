@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Models\Document;
 use Illuminate\Support\Arr;
 use App\Builders\FileBuilder;
+use App\Builders\DocCateBuilder;
 use LaravelEasyRepository\Implementations\Eloquent;
 
 class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
@@ -58,5 +59,16 @@ class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
         $oneWeekAgo = Carbon::now()->subWeek();
         $documents = $this->model->where('created_at', '>=', $oneWeekAgo)->orderBy('view', 'asc')->get();
         return $documents;
+    }
+    public function DocumentItems($id)
+    {
+        $queryBuilder = new DocCateBuilder();
+        $results =  $queryBuilder
+            ->selectItems()
+            ->where('documents.id', '=', $id)
+            ->GroupByItems()
+            ->first();
+
+        return $results ? $results : null;
     }
 }

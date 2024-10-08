@@ -39,6 +39,7 @@ class CategoryRepositoryImplement extends Eloquent  implements CategoryRepositor
         $results =  $queryBuilder
             ->selectFields()
             ->where('categories.id', '=', $id)
+            ->GroupBy()
             ->paginate(10);
         return $results;
     }
@@ -56,13 +57,12 @@ class CategoryRepositoryImplement extends Eloquent  implements CategoryRepositor
             $collection = $queryBuilder
                 ->selectFields()
                 ->where('categories.id', '=', $ImmediateDescendant->id)
+                ->GroupBy()
                 ->get();
             $docCate[] = $collection;
         }
-
         // Làm phẳng mảng
         $flattenedArray = collect($docCate)->flatten();
-
         return $flattenedArray;
     }
 }

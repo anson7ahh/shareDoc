@@ -4,7 +4,6 @@ import fileSlice from './FileSlice';
 const store = configureStore({
     reducer: {
         file: fileSlice,
-
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

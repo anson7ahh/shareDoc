@@ -9,7 +9,7 @@ export default function BasicBreadcrumbs({ AncestorsAndSelf }) {
                     underline="hover" color="inherit" href='/'>
                     Trang chu
                 </Link>
-                {AncestorsAndSelf.original?.parentCategory?.map((ancestor, index) => (
+                {AncestorsAndSelf.map((ancestor, index) => (
                     <div key={index}>
                         <Link className="text-lg font-bold text-blue-600 hover:text-blue-800"
                             underline="hover" color="inherit" href={`${ancestor.id}`} >

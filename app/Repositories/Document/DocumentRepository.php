@@ -11,4 +11,5 @@ interface DocumentRepository extends Repository
     // public function createDocument(array $data): Document;
     public function updateDocument(array $data,  int $document_id): Document;
     public function createDocument(array $data);
+    public function DocumentItems($id);
 }

@@ -1,3 +1,4 @@
+import PageItems from './PageItemsLayout';
 import PaginationOutlined from '@/Components/PaginationComponent';
 import { memo } from 'react';
 
@@ -9,12 +10,8 @@ const PageLayout = ({ data }) => {
 
     return (
         <>
-            <div className='w-auto h-auto bg-red-300'>
-                {entriesArray.map(([key, data]) => (
-                    <div key={key}>
-                        <h1>{data.title}</h1>
-                    </div>
-                ))}
+            <div className="w-auto h-auto bg-gray-300">
+                <PageItems items={entriesArray} />
             </div>
             <div>
                 <PaginationOutlined

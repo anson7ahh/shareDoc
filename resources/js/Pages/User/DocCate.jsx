@@ -5,6 +5,7 @@ import PageLayout from '@/Layouts/PageLayout';
 import { memo } from 'react';
 
 const DocCate = ({ auth, AncestorsAndSelf, paginatedItems }) => {
+    console.log('paginatedItems', paginatedItems?.original?.paginatedItems)
     const originalPaginatedItems = paginatedItems?.original?.paginatedItems;
     return (
         <>
@@ -18,7 +19,7 @@ const DocCate = ({ auth, AncestorsAndSelf, paginatedItems }) => {
             </header>
             <div className='pt-[100px] mx-40 bg-gray-200'>
                 <div>
-                    <BasicBreadcrumbs AncestorsAndSelf={AncestorsAndSelf} />
+                    <BasicBreadcrumbs AncestorsAndSelf={AncestorsAndSelf.original?.parentCategory} />
                 </div>
                 <div>
                     <PageLayout data={originalPaginatedItems} />

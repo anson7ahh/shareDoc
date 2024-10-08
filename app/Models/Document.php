@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\DocumentStatusEnum;
 use App\Enums\DocumentFavoriteEnum;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Document extends Model
@@ -49,5 +50,21 @@ class Document extends Model
     public function favorite()
     {
         return $this->hasMany('favorite::class');
+    }
+
+
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($content) {
+            // Xóa file từ storage trước khi xóa bản ghi khỏi database
+            $filePath = 'public/file/' . $content;
+            if (Storage::disk('local')->exists($filePath)) {
+                Storage::disk('local')->delete($filePath);
+                return true;
+            }
+            return false;
+        });
     }
 }

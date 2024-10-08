@@ -7,6 +7,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\FileController;
 use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\FileDetailController;
 use App\Http\Controllers\Auth\AuthenticateProviderController;
 /*
 |--------------------------------------------------------------------------
@@ -42,8 +43,9 @@ Route::prefix('/upload')->group(function () {
 
 
 
-
-
+Route::prefix('/document/{id}/{slug}.{format}')->group(function () {
+    Route::get('/', [FileDetailController::class, 'index']);
+});
 Route::prefix('/auth/{provider}')->middleware('cors')->group(function () {
     Route::get('/redirect', [AuthenticateProviderController::class, 'redirect']);
     Route::get('/callback', [AuthenticateProviderController::class, 'callback']);
