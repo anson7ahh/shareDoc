@@ -12,7 +12,7 @@ export default function BasicBreadcrumbs({ AncestorsAndSelf }) {
                 {AncestorsAndSelf.map((ancestor, index) => (
                     <div key={index}>
                         <Link className="text-lg font-bold text-blue-600 hover:text-blue-800"
-                            underline="hover" color="inherit" href={`${ancestor.id}`} >
+                            underline="hover" color="inherit" href={`/doc-cat/${ancestor.id}`} >
                             {ancestor.name}
                         </Link>
                     </div>

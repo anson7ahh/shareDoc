@@ -4,10 +4,12 @@ namespace App\Repositories\Document;
 
 use Carbon\Carbon;
 
+use App\Models\DocCate;
 use App\Models\Document;
 use Illuminate\Support\Arr;
 use App\Builders\FileBuilder;
 use App\Builders\DocCateBuilder;
+use Illuminate\Support\Facades\DB;
 use LaravelEasyRepository\Implementations\Eloquent;
 
 class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
@@ -62,13 +64,44 @@ class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
     }
     public function DocumentItems($id)
     {
-        $queryBuilder = new DocCateBuilder();
-        $results =  $queryBuilder
-            ->selectItems()
-            ->where('documents.id', '=', $id)
-            ->GroupByItems()
-            ->first();
 
+        $results =  $this->model::leftJoin('doc_cates', 'doc_cates.document_id', '=', 'documents.id')
+            ->leftJoin('categories', 'categories.id', '=', 'doc_cates.category_id')
+            ->leftJoin('users', 'users.id', '=', 'documents.users_id')
+            ->leftJoin(
+                'downloads',
+                'downloads.documents_id',
+                '=',
+                'documents.id'
+            )
+            ->select(
+                'documents.title',
+                'documents.format',
+                'documents.content',
+                'documents.view',
+                'documents.id',
+                'documents.source',
+                'documents.point',
+                'documents.description',
+                'users.name',
+                'categories.id as category_id',
+                DB::raw('COUNT(downloads.documents_id) AS total_download')
+            )
+            ->groupBy(
+                'documents.title',
+                'documents.format',
+                'documents.content',
+                'documents.view',
+                'documents.source',
+                'documents.point',
+                'documents.description',
+                'users.name',
+                'categories.id',
+                'documents.id'
+            )
+
+            ->where('documents.id', '=', $id)
+            ->first();
         return $results ? $results : null;
     }
 }

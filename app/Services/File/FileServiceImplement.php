@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\IOFactory;
+use App\Events\ViewDocumentEvent;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use LaravelEasyRepository\ServiceApi;
@@ -50,7 +51,8 @@ class FileServiceImplement extends ServiceApi implements FileService
   }
 
 
-
+  // luu document va kiem tra format
+  //neu la word chuyen sang pdf
   public function checkFile(Request $request)
   {
     try {
@@ -85,20 +87,15 @@ class FileServiceImplement extends ServiceApi implements FileService
           $filePath = storage_path('app/public/fileWord/' . $content . '.' . $format);
 
           try {
-            // Cấu hình DomPDF
-            $domPdfPath = base_path('vendor/dompdf/dompdf');
+            // Cấu hình PdfRenderer để sử dụng mPDF
+            \PhpOffice\PhpWord\Settings::setPdfRendererPath(base_path('vendor/mpdf/mpdf'));
+            \PhpOffice\PhpWord\Settings::setPdfRendererName('MPDF');
 
-            \PhpOffice\PhpWord\Settings::setPdfRendererPath($domPdfPath);
-            \PhpOffice\PhpWord\Settings::setPdfRendererName('DomPDF');
             $Content = \PhpOffice\PhpWord\IOFactory::load($filePath);
             $PDFWriter = \PhpOffice\PhpWord\IOFactory::createWriter($Content, 'PDF');
 
-
-
-
             // Chuyển đổi sang PDF
             $pdfFileName = $content . '.pdf';
-
             $PDFWriter->save(storage_path('app/public/file/' . $pdfFileName));
           } catch (\Exception $e) {
             Log::error('Lỗi khi chuyển Word sang PDF: ' . $e->getMessage());
@@ -147,6 +144,7 @@ class FileServiceImplement extends ServiceApi implements FileService
 
 
 
+  // them cac truong con thieu 
   public function updateDocument(Request $request, int $document_id)
   {
     try {
@@ -187,11 +185,14 @@ class FileServiceImplement extends ServiceApi implements FileService
       return response()->json(['status' => 'error', 'message' => 'Lỗi nội bộ server.'], 500);
     }
   }
+
+  // lay cac gia tri  cua document theo id
   public function getDocumentWithId($id)
   {
     try {
       $results = $this->documentRepository->DocumentItems($id);
       if ($results !== null) {
+        event(new ViewDocumentEvent($results));
         $pageItemsId = $results->category_id;
         $categoryID = $this->categoryRepository->findCategory($pageItemsId);
         $category = $categoryID->getAncestorsAndSelf(['name', 'id']);

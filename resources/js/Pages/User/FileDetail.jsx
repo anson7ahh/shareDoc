@@ -1,6 +1,5 @@
 import BasicBreadcrumbs from '@/Components/BreadcrumdComponent';
 import FilePDF from '@/Layouts/FilePDFLayout'
-import FileWord from '@/Layouts/FileWordLayout';
 import FooterLayout from '@/Layouts/FooterLayout';
 import Navbar from "@/Layouts/NavLayout";
 import { memo } from 'react';
@@ -13,6 +12,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 const FileDetail = ({ auth, data }) => {
 
     const DocumentItems = data.original?.pageItems
+    console.log(data)
 
     return (
         <>

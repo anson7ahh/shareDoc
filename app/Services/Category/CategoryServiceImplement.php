@@ -82,7 +82,7 @@ class CategoryServiceImplement extends ServiceApi implements CategoryService
 
     // Tạo đối tượng LengthAwarePaginator để phân trang
     $currentPage = LengthAwarePaginator::resolveCurrentPage();
-    $perPage = 5;
+    $perPage = 10; // so item trong trang
     $currentPageItems = $flattenedArray->forPage($currentPage, $perPage); // Lấy các mục cho trang hiện tại
 
     $paginatedItems = new LengthAwarePaginator(
