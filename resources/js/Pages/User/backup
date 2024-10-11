@@ -1,0 +1,26 @@
+comment.map(comment => (
+                                <div key={comment.comment_id} className="p-4 border border-gray-300 rounded-lg bg-white shadow-md transition-transform transform">
+                                    <div className="flex items-center mb-3">
+                                        <Image
+                                            src={comment?.img}
+
+                                            className="w-12 h-12 rounded-full mr-4 shadow-sm"
+                                        />
+                                        <div>
+                                            <span className="font-semibold text-gray-800">{comment.name}</span>
+                                            <span className="text-sm text-gray-500 block">{new Date(comment.created_at).toLocaleDateString()}</span>
+                                        </div>
+                                    </div>
+                                    <div className="bg-gray-100 p-3 rounded-md">
+                                        <p className="text-gray-800">{comment.body}</p>
+                                    </div>
+                                    <div className="mt-3 text-right">
+                                        <button onClick={handleOnclick} className="text-blue-500 hover:underline focus:outline-none">Trả lời</button>
+                                    </div>
+                                    <div>
+                                        {showReplyComment != false && <div>
+                                            sadasd
+                                        </div>}
+                                    </div>
+                                </div>
+                            ))

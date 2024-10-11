@@ -56,12 +56,12 @@ class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
         }
         return null;
     }
-    public function featuredDocument()
-    {
-        $oneWeekAgo = Carbon::now()->subWeek();
-        $documents = $this->model->where('created_at', '>=', $oneWeekAgo)->orderBy('view', 'asc')->get();
-        return $documents;
-    }
+    // public function featuredDocument()
+    // {
+    //     $oneWeekAgo = Carbon::now()->subWeek();
+    //     $documents = $this->model->where('created_at', '>=', $oneWeekAgo)->orderBy('view', 'asc')->get();
+    //     return $documents;
+    // }
     public function DocumentItems($id)
     {
 
@@ -74,7 +74,9 @@ class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
                 '=',
                 'documents.id'
             )
+
             ->select(
+
                 'documents.title',
                 'documents.format',
                 'documents.content',
@@ -97,7 +99,8 @@ class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
                 'documents.description',
                 'users.name',
                 'categories.id',
-                'documents.id'
+                'documents.id',
+
             )
 
             ->where('documents.id', '=', $id)

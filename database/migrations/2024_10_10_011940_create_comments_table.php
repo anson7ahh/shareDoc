@@ -1,10 +1,8 @@
 <?php
 
-
-use Illuminate\Support\Facades\Schema;
-use App\Enums\DownloadHistoryStatusEnum;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -13,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('download_histories', function (Blueprint $table) {
-            $table->id();
+        Schema::create('comments', function (Blueprint $table) {
+            $table->increments('id');
             $table->unsignedBigInteger('users_id');
             $table->unsignedBigInteger('documents_id');
-            $table->enum('favorite', DownloadHistoryStatusEnum::getValues())->default(DownloadHistoryStatusEnum::show);
+            $table->integer('parent_id')->unsigned()->nullable();
+            $table->text('body');
+            $table->timestamps();
             $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->foreign('documents_id')->references('id')->on('documents')->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->timestamps();
         });
     }
 
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('download_histories');
+        Schema::dropIfExists('comments');
     }
 };

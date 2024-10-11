@@ -35,10 +35,7 @@ class Document extends Model
     {
         return $this->hasMany('Download::class');
     }
-    public function historyDownload()
-    {
-        return $this->hasMany('HistoryDownload::class');
-    }
+
     public function docCate()
     {
         return $this->hasMany('DocCate::class');
@@ -52,7 +49,10 @@ class Document extends Model
         return $this->hasMany('favorite::class');
     }
 
-
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->whereNull('parent_id');
+    }
 
     protected static function boot()
     {

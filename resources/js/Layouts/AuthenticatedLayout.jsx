@@ -1,13 +1,11 @@
 import Dropdown from "@/Components/Dropdown";
+import Image from '@/Components/ImgComponent'
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { useState } from "react";
-
 export default function Authenticated({ className = "", user }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
-    const imageUrl = `/storage/img/avatarDefault.png`;
 
-    const avatarUser = user.img ? `/storage/img/${user.img}` : imageUrl;
     return (
         <div className={"bg-white" + className}>
             <Dropdown>
@@ -17,8 +15,8 @@ export default function Authenticated({ className = "", user }) {
                             type="button"
                             className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                         >
-                            <img src={avatarUser} className="w-8 h-8 rounded-full mr-2" />
-                            {/* <img src={user.img ? /video_thumbnail/user.img : /video_thumbnail/user.img} /> */}
+                            <Image auth={user.img} className="w-8 h-8 rounded-full mr-2" />
+
 
                             {user.name} {user.total_points}d
 

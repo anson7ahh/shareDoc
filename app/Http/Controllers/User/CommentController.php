@@ -2,39 +2,29 @@
 
 namespace App\Http\Controllers\User;
 
-use Inertia\Inertia;
+use App\Models\Comment;
 use Illuminate\Http\Request;
-use App\Services\File\FileService;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Services\Comment\CommentService;
+use App\Http\Requests\User\CommentRequest;
 
-class FileDetailController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    protected $FileService;
+
     protected $CommentService;
-    public function __construct(FileService $FileService, CommentService $CommentService)
 
+    public function __construct(CommentService $commentService)
     {
-        $this->FileService = $FileService;
-        $this->CommentService = $CommentService;
+        $this->CommentService = $commentService;
     }
-    public function index($id, $slug)
+    public function index()
     {
-
-
-        $data = $this->FileService->getDocumentWithId($id);
-        $comment = $this->CommentService->getComment($id);
-
-
-        return Inertia::render('User/FileDetail', [
-            'data' => $data,
-            'comment' => $comment,
-        ]);
+        //
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -47,9 +37,15 @@ class FileDetailController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CommentRequest $request)
     {
-        //
+
+        $user_id = Auth::user()->id;
+        $body = $request->input('body');
+        $document_id = $request->input('document_id');
+        $newComment = $this->CommentService->CreateComment($user_id, $body, $document_id);
+
+        return  $newComment;
     }
 
     /**

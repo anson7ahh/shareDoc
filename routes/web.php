@@ -9,6 +9,8 @@ use App\Http\Controllers\User\FileController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\FileDetailController;
 use App\Http\Controllers\Auth\AuthenticateProviderController;
+use App\Http\Controllers\User\CommentController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -45,6 +47,9 @@ Route::prefix('/upload')->group(function () {
 
 Route::prefix('/document/{id}/{slug}.{format}')->group(function () {
     Route::get('/', [FileDetailController::class, 'index']);
+});
+Route::prefix('/comment')->group(function () {
+    Route::middleware('auth')->post('/', [CommentController::class, 'store']);
 });
 Route::prefix('/auth/{provider}')->middleware('cors')->group(function () {
     Route::get('/redirect', [AuthenticateProviderController::class, 'redirect']);
