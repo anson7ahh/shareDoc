@@ -49,7 +49,8 @@ Route::prefix('/document/{id}/{slug}.{format}')->group(function () {
     Route::get('/', [FileDetailController::class, 'index']);
 });
 Route::prefix('/comment')->group(function () {
-    Route::middleware('auth')->post('/', [CommentController::class, 'store']);
+    Route::post('/', [CommentController::class, 'store']);
+    Route::post('/{commentId}', [CommentController::class, 'create']);
 });
 Route::prefix('/auth/{provider}')->middleware('cors')->group(function () {
     Route::get('/redirect', [AuthenticateProviderController::class, 'redirect']);

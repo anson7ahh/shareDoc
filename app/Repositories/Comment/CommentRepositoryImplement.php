@@ -25,31 +25,80 @@ class CommentRepositoryImplement extends Eloquent implements CommentRepository
     public function CreateComment($users_id, $document_id, $body)
     {
         $comment = $this->model->create([
-            'user_id'     => $users_id,
-            'document_id' => $document_id,
-            'body'        => $body,
+            'users_id' => $users_id,
+            'documents_id' => $document_id,
+            'body' => $body,
         ]);
-        return $comment ?  $comment : null;
+        return $comment ?  $comment : false;
     }
     public function getComment($id)
     {
-
         $results = $this->model
             ->leftJoin('documents', 'comments.documents_id', '=', 'documents.id')
             ->leftJoin('users', 'comments.users_id', '=', 'users.id')
             ->select(
 
-                'comments.id as comment_id',
+                'comments.id',
                 'comments.body',
                 'comments.parent_id',
                 'name',
                 'img',
                 'comments.created_at',
-
             )
             ->where('documents.id', '=', $id)
+            ->orderBy('comments.created_at', 'desc')
             ->get();
 
         return $results;
+    }
+    public function newComment($id)
+    {
+        $results = $this->model
+            ->leftJoin('documents', 'comments.documents_id', '=', 'documents.id')
+            ->leftJoin('users', 'comments.users_id', '=', 'users.id')
+            ->select(
+
+                'comments.id',
+                'comments.body',
+                'comments.parent_id',
+                'name',
+                'img',
+                'comments.created_at',
+            )
+            ->where('documents.id', '=', $id)
+            ->orderBy('comments.created_at', 'desc')
+            ->first();
+
+        return $results;
+    }
+    public function replyComment($CommentId, $user_id, $documents_id, $body)
+    {
+        $replyComment = $this->model->create([
+            'parent_id' => $CommentId,
+            'users_id' => $user_id,
+            'documents_id' => $documents_id,
+            'body' => $body,
+        ]);
+        return $replyComment ?  $replyComment : false;
+    }
+    public function newReplyComment($id)
+    {
+        $results = $this->model
+            ->leftJoin('documents', 'comments.documents_id', '=', 'documents.id')
+            ->leftJoin('users', 'comments.users_id', '=', 'users.id')
+            ->select(
+
+                'comments.id',
+                'comments.body',
+                'comments.parent_id',
+                'name',
+                'img',
+                'comments.created_at',
+            )
+            ->where('comments.id', '=', $id)
+            ->orderBy('comments.created_at', 'desc')
+            ->first();
+
+        return $results ?  $results : null;
     }
 }

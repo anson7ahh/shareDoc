@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Comment\CommentService;
 use App\Http\Requests\User\CommentRequest;
+use App\Http\Requests\User\ReplyCommentRequest;
 
 class CommentController extends Controller
 {
@@ -29,9 +30,10 @@ class CommentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(ReplyCommentRequest $request, $CommentId)
     {
-        //
+
+        return $this->CommentService->CreateReplyComment($request, $CommentId);
     }
 
     /**
@@ -42,10 +44,10 @@ class CommentController extends Controller
 
         $user_id = Auth::user()->id;
         $body = $request->input('body');
-        $document_id = $request->input('document_id');
-        $newComment = $this->CommentService->CreateComment($user_id, $body, $document_id);
+        $documents_id = $request->input('documents_id');
 
-        return  $newComment;
+
+        return $this->CommentService->CreateComment($user_id, $body, $documents_id);
     }
 
     /**

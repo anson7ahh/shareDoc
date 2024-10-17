@@ -17,6 +17,7 @@ class CommentSeeder extends Seeder
             'documents_id' => 1,
             'users_id' => 1,
             'body' => 'a',
+            'parent_id' => 53,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -24,6 +25,7 @@ class CommentSeeder extends Seeder
             'documents_id' => 1,
             'users_id' => 1,
             'body' => 'b',
+            'parent_id' => 55,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
