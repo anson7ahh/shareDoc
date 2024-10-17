@@ -1,5 +1,6 @@
 import { Document, Page } from 'react-pdf';
 
+import ButtonDownloadComponent from '@/Components/ButtonDownloadComponent';
 import { useState } from 'react';
 
 function FilePDF({ data }) {
@@ -51,9 +52,9 @@ function FilePDF({ data }) {
                         Xem thêm
                     </button>
                 )}
-                <button className="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-all ease-in-out duration-300 w-full">
-                    Tải xuống
-                </button>
+                <div className='w-full'>
+                    <ButtonDownloadComponent document={data} />
+                </div>
             </div>
 
             {/* Thông tin tài liệu */}

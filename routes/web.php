@@ -52,6 +52,9 @@ Route::prefix('/comment')->group(function () {
     Route::post('/', [CommentController::class, 'store']);
     Route::post('/{commentId}', [CommentController::class, 'create']);
 });
+Route::prefix('/download')->group(function () {
+    Route::post('/', [CommentController::class, 'store']);
+});
 Route::prefix('/auth/{provider}')->middleware('cors')->group(function () {
     Route::get('/redirect', [AuthenticateProviderController::class, 'redirect']);
     Route::get('/callback', [AuthenticateProviderController::class, 'callback']);
