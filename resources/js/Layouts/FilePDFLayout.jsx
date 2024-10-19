@@ -3,7 +3,7 @@ import { Document, Page } from 'react-pdf';
 import ButtonDownloadComponent from '@/Components/ButtonDownloadComponent';
 import { useState } from 'react';
 
-function FilePDF({ data }) {
+function FilePDF({ data, auth }) {
     const [numPages, setNumPages] = useState(null); // Số lượng trang PDF
     const [visiblePages, setVisiblePages] = useState(1); // Số trang hiển thị ban đầu
     const [numvisiblePages, setNumvisiblePages] = useState(0); // Tổng số lần click
@@ -43,18 +43,17 @@ function FilePDF({ data }) {
             </div>
 
             {/* Nút "Xem thêm" và "Tải xuống" */}
-            <div className="flex justify-between gap-4 mb-6">
+            <div className="flex flex-row gap-4 mb-6 justify-center">
                 {visiblePages < numPages && numvisiblePages < 3 && (
                     <button
                         onClick={handleShowMore}
-                        className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-all ease-in-out duration-300 w-full"
+                        className="bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600 transition-all ease-in-out duration-300 w-full font-semibold shadow-md focus:ring-2 focus:ring-blue-300"
                     >
                         Xem thêm
                     </button>
                 )}
-                <div className='w-full'>
-                    <ButtonDownloadComponent document={data} />
-                </div>
+
+                <ButtonDownloadComponent document={data} auth={auth} />
             </div>
 
             {/* Thông tin tài liệu */}

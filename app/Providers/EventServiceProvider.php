@@ -25,6 +25,11 @@ class EventServiceProvider extends ServiceProvider
             IncrementDocumentView::class,
         ],
 
+        \App\Events\DownloadSuccessful::class => [
+            \App\Listeners\UpdateUserBalance::class,
+
+        ],
+
     ];
 
     /**

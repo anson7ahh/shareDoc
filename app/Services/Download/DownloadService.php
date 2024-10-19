@@ -2,9 +2,12 @@
 
 namespace App\Services\Download;
 
+
 use LaravelEasyRepository\BaseService;
+use App\DTOs\Download\CreateDownloadDTO;
 
-interface DownloadService extends BaseService{
+interface DownloadService extends BaseService
+{
 
-    // Write something awesome :)
+    public function CreateDownload(CreateDownloadDTO $downloadDTO);
 }

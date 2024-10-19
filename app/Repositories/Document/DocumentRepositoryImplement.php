@@ -76,12 +76,12 @@ class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
             )
 
             ->select(
-
+                'users.id as user_id',
                 'documents.title',
                 'documents.format',
                 'documents.content',
                 'documents.view',
-                'documents.id',
+                'documents.id as documents_id',
                 'documents.source',
                 'documents.point',
                 'documents.description',
@@ -100,7 +100,7 @@ class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
                 'users.name',
                 'categories.id',
                 'documents.id',
-
+                'users.id',
             )
 
             ->where('documents.id', '=', $id)

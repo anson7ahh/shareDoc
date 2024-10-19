@@ -12,14 +12,14 @@ class DTOsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'make:dto {name}';
+    protected $signature = 'make:dto {folder} {name}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'success';
+    protected $description = 'Create a new DTO class';
 
     /**
      * Execute the console command.
@@ -31,16 +31,23 @@ class DTOsCommand extends Command
         parent::__construct();
         $this->files = $files;
     }
+
     public function handle()
     {
+        // Lấy tên và thư mục từ đối số
+        $folder = $this->argument('folder');
         $name = $this->argument('name');
-        $this->createDTOsClass($name);
+
+        // Tạo lớp DTO
+        $this->createDTOsClass($folder, $name);
     }
-    protected function createDTOsClass($name)
+
+    protected function createDTOsClass($folder, $name)
     {
-        $folderPath = app_path('DTOs');
+        // Đường dẫn đến thư mục DTOs
+        $folderPath = app_path("DTOs/{$folder}");
 
-
+        // Kiểm tra và tạo thư mục nếu chưa tồn tại
         if (!$this->files->exists($folderPath)) {
             $this->files->makeDirectory($folderPath, 0755, true);
             $this->info("Thư mục đã được tạo: {$folderPath}");
@@ -53,26 +60,27 @@ class DTOsCommand extends Command
 
         // Kiểm tra file đã tồn tại chưa
         if ($this->files->exists($filePath)) {
-            $this->error('File dto đã tồn tại!');
+            $this->error('File DTO đã tồn tại!');
         } else {
-            // Nội dung của file builder
-            $stub = $this->getStubContent($name);
+            // Nội dung của file DTO
+            $stub = $this->getStubContent($folder, $name);
 
             // Tạo file
             $this->files->put($filePath, $stub);
-            $this->info("dto class đã được tạo: {$filePath}");
+            $this->info("DTO class đã được tạo: {$filePath}");
         }
     }
-    protected function getStubContent($name)
+
+    protected function getStubContent($folder, $name)
     {
         return <<<EOT
 <?php
 
-namespace App\DTOs;
+namespace App\DTOs\\{$folder};
 
 class {$name}
 {
-   
+    // Các thuộc tính và phương thức sẽ được định nghĩa ở đây
 }
 EOT;
     }

@@ -1,6 +1,7 @@
 import Dropdown from "@/Components/Dropdown";
 import Image from '@/Components/ImgComponent'
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
+import formatCurrency from '@/Utils/index'
 import { useState } from "react";
 export default function Authenticated({ className = "", user }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
@@ -18,7 +19,7 @@ export default function Authenticated({ className = "", user }) {
                             <Image auth={user.img} className="w-8 h-8 rounded-full mr-2" />
 
 
-                            {user.name} {user.total_points}d
+                            {user.name} {formatCurrency(user.total_points)}
 
                         </button>
                     </span>

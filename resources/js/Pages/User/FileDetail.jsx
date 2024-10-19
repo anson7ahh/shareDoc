@@ -5,6 +5,7 @@ import CommentLayout from '@/Layouts/CommentLayout';
 import FilePDF from '@/Layouts/FilePDFLayout';
 import FooterLayout from '@/Layouts/FooterLayout';
 import Navbar from "@/Layouts/NavLayout";
+import formatCurrency from '@/Utils/index.js'
 import { pdfjs } from 'react-pdf';
 import { setAllComment } from '@/redux/CommentSlice';
 import { useDispatch } from 'react-redux';
@@ -43,11 +44,11 @@ const FileDetail = ({ auth, data, comment }) => {
                     <h2 className='text-2xl font-bold text-gray-900'>{DocumentItems.title}</h2>
                     <p className='text-gray-600'>Lượt tải: {DocumentItems.total_download}</p>
                     <p className='text-gray-600'>Lượt xem: {DocumentItems.view}</p>
-                    <p className='text-gray-600'>Giá: {DocumentItems.point === 0 ? 'Miễn phí' : DocumentItems.point}</p>
+                    <p className='text-gray-600'>Giá: {DocumentItems.point === 0 ? 'Miễn phí' : formatCurrency(DocumentItems.point)}</p>
                 </div>
 
                 <div className='bg-gray-200 p-4 rounded-lg shadow-md'>
-                    <FilePDF data={DocumentItems} />
+                    <FilePDF data={DocumentItems} auth={auth} />
                 </div>
 
                 <div className='w-full pt-5 flex flex-col space-y-4'>
@@ -56,7 +57,7 @@ const FileDetail = ({ auth, data, comment }) => {
                         <p className="text-xl font-semibold text-gray-800">Bình luận</p>
                     </div>
                     <div>
-                        <CommentLayout auth={auth?.user} DocumentId={DocumentItems?.id} />
+                        <CommentLayout auth={auth?.user} DocumentId={DocumentItems?.document_id} />
                     </div>
                 </div>
             </main>

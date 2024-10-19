@@ -2,16 +2,19 @@
 
 namespace App\Repositories\Download;
 
-use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\Download;
+use App\DTOs\Download\DownloadDTO;
+use App\DTOs\Download\CreateDownloadDTO;
+use LaravelEasyRepository\Implementations\Eloquent;
 
-class DownloadRepositoryImplement extends Eloquent implements DownloadRepository{
+class DownloadRepositoryImplement extends Eloquent implements DownloadRepository
+{
 
     /**
-    * Model class to be used in this repository for the common methods inside Eloquent
-    * Don't remove or change $this->model variable name
-    * @property Model|mixed $model;
-    */
+     * Model class to be used in this repository for the common methods inside Eloquent
+     * Don't remove or change $this->model variable name
+     * @property Model|mixed $model;
+     */
     protected $model;
 
     public function __construct(Download $model)
@@ -19,5 +22,13 @@ class DownloadRepositoryImplement extends Eloquent implements DownloadRepository
         $this->model = $model;
     }
 
-    // Write something awesome :)
+    public function CreateDownload(CreateDownloadDTO $downloadDTO)
+    {
+        $download = $this->model->create([
+            'users_id' => $downloadDTO->user_id,
+            'documents_id' => $downloadDTO->document_id
+        ]);
+
+        return $download;
+    }
 }
