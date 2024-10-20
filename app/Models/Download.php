@@ -2,14 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\DownloadStatusEnum;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Download extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'status'
+        'users_id',
+        'documents_id',
+        'status',
+    ];
+    protected $casts = [
+        'status' => DownloadStatusEnum::class,
     ];
     public function User()
     {

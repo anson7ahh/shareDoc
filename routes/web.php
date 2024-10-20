@@ -7,9 +7,10 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\FileController;
 use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\CommentController;
+use App\Http\Controllers\User\DownloadController;
 use App\Http\Controllers\User\FileDetailController;
 use App\Http\Controllers\Auth\AuthenticateProviderController;
-use App\Http\Controllers\User\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,7 +54,7 @@ Route::prefix('/comment')->group(function () {
     Route::post('/{commentId}', [CommentController::class, 'create']);
 });
 Route::prefix('/download')->group(function () {
-    Route::post('/', [CommentController::class, 'store']);
+    Route::post('/', [DownloadController::class, 'store']);
 });
 Route::prefix('/auth/{provider}')->middleware('cors')->group(function () {
     Route::get('/redirect', [AuthenticateProviderController::class, 'redirect']);

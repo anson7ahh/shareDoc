@@ -2,9 +2,9 @@
 
 namespace App\Events;
 
+use App\Data\CreateDownloadData;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
-use App\DTOs\Download\CreateDownloadDTO;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -18,9 +18,9 @@ class DownloadSuccessful
     /**
      * Create a new event instance.
      */
-    public CreateDownloadDTO $downloadDTO;
+    public CreateDownloadData $downloadDTO;
 
-    public function __construct(CreateDownloadDTO $downloadDTO)
+    public function __construct(CreateDownloadData $downloadDTO)
     {
         $this->downloadDTO = $downloadDTO;
     }

@@ -27,8 +27,6 @@ class UpdateUserBalance
         $userId = $event->downloadDTO->user_id;
         $documentId = $event->downloadDTO->document_id;
 
-
-        // Lấy thông tin tài liệu và người đăng
         $document = Document::find($documentId);
 
         if ($document && $document) {

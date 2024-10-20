@@ -39,10 +39,9 @@ class DownloadController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(DownloadRequest $DownloadRequest)
+    public function store(Request $DownloadRequest)
     {
         try {
-
             $CreateDownloadDTO = CreateDownloadData::from([
                 'document_point' => $DownloadRequest->input('document_point'),
                 'document_id' => $DownloadRequest->input('document_id'),
@@ -50,17 +49,15 @@ class DownloadController extends Controller
                 'user_total_point' => Auth::user()->total_points,
             ]);
 
-
-            Log::debug('CreateDownloadDTO:', $CreateDownloadDTO->toArray());
-            // $this->downloadService->createDownload($CreateDownloadDTO);
+            $this->downloadService->createDownload($CreateDownloadDTO);
             return response()->json([
                 'message' => 'Download created successfully.',
             ], 201);
         } catch (Exception $e) {
             // Xử lý lỗi từ service
             return response()->json([
-                'error' => $e->getMessage(),
-            ], $e->getCode() ?: 500);
+                'Error' => 'Error creating download.',
+            ], 500);
         }
     }
 

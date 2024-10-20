@@ -4,8 +4,7 @@ namespace App\Repositories\Download;
 
 use App\Models\Download;
 use App\Data\CreateDownloadData;
-use App\DTOs\Download\DownloadDTO;
-use App\DTOs\Download\CreateDownloadDTO;
+
 use LaravelEasyRepository\Implementations\Eloquent;
 
 class DownloadRepositoryImplement extends Eloquent implements DownloadRepository
@@ -27,9 +26,8 @@ class DownloadRepositoryImplement extends Eloquent implements DownloadRepository
     {
         $download = $this->model->create([
             'users_id' => $downloadDTO->user_id,
-            'documents_id' => $downloadDTO->document_id
+            'documents_id' => $downloadDTO->document_id,
         ]);
-
         return $download;
     }
 }

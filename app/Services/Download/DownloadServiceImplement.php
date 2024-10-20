@@ -42,25 +42,20 @@ class DownloadServiceImplement extends ServiceApi implements DownloadService
     try {
       // Kiểm tra nếu điểm của người dùng không đủ
       if ($downloadDTO->user_total_point < $downloadDTO->document_point) {
-        // Trả về false hoặc có thể quăng ngoại lệ với mã lỗi 422
-        throw new \Exception('Not enough points to create download.', 422);
+        return response()->json(['error' => 'ban ko du tien'], 422);
       }
       // Tạo bản ghi download
-      $downloadCreated = $this->mainRepository->createDownload($downloadDTO);
+      $downloadCreated = $this->mainRepository->CreateDownload($downloadDTO);
 
-      // Kiểm tra nếu tạo bản ghi thành công
+
       if ($downloadCreated) {
-        // Nếu tạo thành công, phát sự kiện
-        event(new DownloadSuccessful($downloadCreated));
-
-        // Trả về true nếu thành công
+        event(new DownloadSuccessful($downloadDTO));
         return true;
       }
 
-      // Nếu không tạo được download, quăng ngoại lệ
-      throw new \Exception('Failed to create download.', 500);
+      return response()->json(['error' => 'An error occurred while creating the comment'], 400);
     } catch (\Exception $e) {
-      // Quăng lại ngoại lệ để controller xử lý
+      return response()->json(['error' => 'An error occurred while creating the comment', 'details' => $e->getMessage()], 500);
       throw $e;
     }
   }
