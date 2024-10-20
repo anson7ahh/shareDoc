@@ -58,9 +58,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('Download::class');
     }
-    public function HistoryDownload()
+    public function Tag()
     {
-        return $this->hasMany('HistoryDownload::class');
+        return $this->hasMany('Tag::class');
     }
     public function Favorite()
     {

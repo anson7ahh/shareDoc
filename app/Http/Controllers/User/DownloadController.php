@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\User;
 
+use Exception;
 use Illuminate\Http\Request;
+
+use App\Data\CreateDownloadData;
 use Illuminate\Support\Facades\Log;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\DTOs\Download\CreateDownloadDTO;
 use App\Services\Download\DownloadService;
 use App\Http\Requests\User\DownloadRequest;
 
@@ -36,25 +39,31 @@ class DownloadController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(DownloadRequest $request)
+    public function store(DownloadRequest $DownloadRequest)
     {
-        Log::debug('Request data:', [
-            'point' => $request->input('point'),
-            'document_id' => $request->input('document_id'),
-            'user_id' => Auth::user()->id,
-            'user_total_points' => Auth::user()->total_points,
-        ]);
+        try {
 
-        $downloadDTO = new CreateDownloadDTO(
-            $request->input('point'),
-            $request->input('document_id'),
-            Auth::user()->id,
-            Auth::user()->total_points,
-        );
+            $CreateDownloadDTO = CreateDownloadData::from([
+                'document_point' => $DownloadRequest->input('document_point'),
+                'document_id' => $DownloadRequest->input('document_id'),
+                'user_id' => Auth::user()->id,
+                'user_total_point' => Auth::user()->total_points,
+            ]);
 
-        $newDownload = $this->downloadService->CreateDownload($downloadDTO);
-        return response()->json($newDownload);
+
+            Log::debug('CreateDownloadDTO:', $CreateDownloadDTO->toArray());
+            // $this->downloadService->createDownload($CreateDownloadDTO);
+            return response()->json([
+                'message' => 'Download created successfully.',
+            ], 201);
+        } catch (Exception $e) {
+            // Xử lý lỗi từ service
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], $e->getCode() ?: 500);
+        }
     }
+
 
     /**
      * Display the specified resource.

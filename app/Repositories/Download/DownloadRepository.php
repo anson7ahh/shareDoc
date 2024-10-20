@@ -3,12 +3,13 @@
 namespace App\Repositories\Download;
 
 
+use App\Data\CreateDownloadData;
 use LaravelEasyRepository\Repository;
-use App\DTOs\Download\CreateDownloadDTO;
+
 
 
 interface DownloadRepository extends Repository
 {
 
-    public function CreateDownload(CreateDownloadDTO $downloadDTO);
+    public function CreateDownload(CreateDownloadData $downloadDTO);
 }

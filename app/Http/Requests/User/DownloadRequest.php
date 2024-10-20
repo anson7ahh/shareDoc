@@ -22,10 +22,8 @@ class DownloadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'document_id' => 'required|integer',
-            'point' => 'required|integer|min:0',
-
-
+            'document_id' => ['required', 'integer', 'exists:documents', 'id'],
+            'document_point' => ['required', 'integer', 'min:0', 'required'],
         ];
     }
 }

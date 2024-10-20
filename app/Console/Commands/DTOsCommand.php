@@ -77,9 +77,11 @@ class DTOsCommand extends Command
 <?php
 
 namespace App\DTOs\\{$folder};
-
-class {$name}
+use Spatie\DataTransferObject\Attributes\MapFrom;
+use Spatie\DataTransferObject\DataTransferObject;
+class {$name} extends DataTransferObject
 {
+  use DataTransferObject;
     // Các thuộc tính và phương thức sẽ được định nghĩa ở đây
 }
 EOT;

@@ -5,16 +5,17 @@ import axios from "axios";
 import formatCurrency from '@/Utils/index'
 
 function ButtonDownloadComponent({ document, auth }) {
-    console.log(document)
-
+    console.log((document.documents_id))
+    console.log((document.point))
+    console.log(auth.user.total_points)
     const handleClick = async () => {
-        if (document.point > 0) {
+        if (Number(document.point) > 0) {
             const confirmed = window.confirm(`Tài liệu có giá ${formatCurrency(document.point)} . Bạn chắc chắn không?`);
             if (confirmed) {
                 try {
                     const response = await axios.post('/download', {
                         document_id: document.documents_id,
-                        point: document.point,
+                        document_point: document.point,
                     });
                     console.log("API call thành công!", response.data);
                 } catch (error) {
@@ -24,7 +25,12 @@ function ButtonDownloadComponent({ document, auth }) {
                 console.log("Người dùng đã hủy!");
             }
         } else {
-            console.log("Giá bằng 0, không cần xác nhận.");
+            const response = await axios.post('/download', {
+                document_id: document.documents_id,
+                point: document.point,
+            });
+            console.log("API call thành công!", response.data);
+
         }
     };
 

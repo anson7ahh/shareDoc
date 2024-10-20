@@ -2,6 +2,8 @@
 
 namespace App\Services\Download;
 
+use Exception;
+use App\Data\CreateDownloadData;
 use App\DTOs\Download\DownloadDTO;
 use App\Events\DownloadSuccessful;
 use LaravelEasyRepository\ServiceApi;
@@ -34,38 +36,32 @@ class DownloadServiceImplement extends ServiceApi implements DownloadService
     $this->mainRepository = $mainRepository;
   }
 
-  public function CreateDownload(CreateDownloadDTO $downloadDTO)
+
+  public function createDownload(CreateDownloadData $downloadDTO)
   {
     try {
       // Kiểm tra nếu điểm của người dùng không đủ
-      $remainingPoints = $downloadDTO->user_total_point - $downloadDTO->document_point;
-      if ($remainingPoints < 0) {
-        return response()->json([
-          'error' => 'Not enough points to create download.',
-        ], 422); // Trả về 422 nếu điểm không đủ
+      if ($downloadDTO->user_total_point < $downloadDTO->document_point) {
+        // Trả về false hoặc có thể quăng ngoại lệ với mã lỗi 422
+        throw new \Exception('Not enough points to create download.', 422);
       }
-
       // Tạo bản ghi download
-      $downloadCreated = $this->mainRepository->CreateDownload($downloadDTO);
+      $downloadCreated = $this->mainRepository->createDownload($downloadDTO);
 
+      // Kiểm tra nếu tạo bản ghi thành công
       if ($downloadCreated) {
-        // Nếu tạo thành công, phát sự kiện và trả về phản hồi thành công
-        event(new DownloadSuccessful($downloadDTO));
-        return response()->json([
-          'message' => 'Download created successfully.',
-        ], 201);
+        // Nếu tạo thành công, phát sự kiện
+        event(new DownloadSuccessful($downloadCreated));
+
+        // Trả về true nếu thành công
+        return true;
       }
 
-      // Nếu không tạo được download, trả về lỗi
-      return response()->json([
-        'error' => 'Failed to create download.'
-      ], 500);
+      // Nếu không tạo được download, quăng ngoại lệ
+      throw new \Exception('Failed to create download.', 500);
     } catch (\Exception $e) {
-      // Xử lý ngoại lệ và trả về lỗi hệ thống
-      return response()->json([
-        'error' => 'An error occurred while creating download.',
-        'message' => $e->getMessage(),
-      ], 500);
+      // Quăng lại ngoại lệ để controller xử lý
+      throw $e;
     }
   }
 }
