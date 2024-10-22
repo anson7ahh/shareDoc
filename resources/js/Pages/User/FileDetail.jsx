@@ -18,7 +18,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 
 const FileDetail = ({ auth, data, comment }) => {
-
+    console.log('auth', auth)
     const dispatch = useDispatch();
 
     useEffect(() => {

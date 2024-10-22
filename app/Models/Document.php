@@ -29,24 +29,24 @@ class Document extends Model
     ];
     public function user()
     {
-        return $this->belongsTo('User::class');
+        return $this->belongsTo('User::class', 'user_id');
     }
     public function download()
     {
-        return $this->hasMany('Download::class');
+        return $this->hasMany('Download::class', 'document_id');
     }
 
     public function docCate()
     {
-        return $this->hasMany('DocCate::class');
+        return $this->hasMany('DocCate::class', 'document_id');
     }
     public function docTag()
     {
-        return $this->hasMany('DocTag::class');
+        return $this->hasMany('DocTag::class', 'document_id');
     }
     public function favorite()
     {
-        return $this->hasMany('favorite::class');
+        return $this->hasMany('favorite::class', 'document_id');
     }
 
     public function comments()

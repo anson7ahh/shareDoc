@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('users_id');
-            $table->unsignedBigInteger('documents_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('document_id');
             $table->integer('parent_id')->unsigned()->nullable();
             $table->text('body');
             $table->timestamps();
-            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade')
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->foreign('documents_id')->references('id')->on('documents')->onDelete('cascade')
+            $table->foreign('document_id')->references('id')->on('documents')->onDelete('cascade')
                 ->onUpdate('cascade');
         });
     }

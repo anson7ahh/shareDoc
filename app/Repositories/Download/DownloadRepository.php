@@ -12,4 +12,5 @@ interface DownloadRepository extends Repository
 {
 
     public function CreateDownload(CreateDownloadData $downloadDTO);
+    public function findByDocumentAndUser(CreateDownloadData $downloadDTO);
 }

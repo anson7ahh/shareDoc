@@ -13,12 +13,12 @@ class DocCate extends Model
         'document_id',
     ];
 
-    public function Document()
+    public function document()
     {
-        return $this->belongsTo('Document::class');
+        return $this->belongsTo('Document::class', 'document_id');
     }
-    public function Category()
+    public function category()
     {
-        return $this->belongsTo('Category::class');
+        return $this->belongsTo('Category::class', 'category_id');
     }
 }

@@ -14,12 +14,12 @@ return new class extends Migration
     {
         Schema::create('downloads', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('users_id');
-            $table->unsignedBigInteger('documents_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('document_id');
             $table->enum('status', DownloadStatusEnum::getValues())->default(DownloadStatusEnum::show);
-            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade')
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->foreign('documents_id')->references('id')->on('documents')->onDelete('cascade')
+            $table->foreign('document_id')->references('id')->on('documents')->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->timestamps();
         });

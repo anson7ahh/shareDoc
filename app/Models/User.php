@@ -51,19 +51,19 @@ class User extends Authenticatable
 
     public function Document()
     {
-        return $this->hasMany('Document::class');
+        return $this->hasMany('Document::class', 'user_id');
     }
 
     public function Download()
     {
-        return $this->hasMany('Download::class');
+        return $this->hasMany('Download::class', 'user_id');
     }
     public function Tag()
     {
-        return $this->hasMany('Tag::class');
+        return $this->hasMany('Tag::class', 'user_id');
     }
     public function Favorite()
     {
-        return $this->hasMany('Favorite::class');
+        return $this->hasMany('Favorite::class', 'user_id');
     }
 }

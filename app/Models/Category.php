@@ -20,6 +20,6 @@ class Category extends Node
 
     public function DocCate()
     {
-        return $this->hasMany('DocCate::class');
+        return $this->hasMany('DocCate::class', 'category_id');
     }
 }

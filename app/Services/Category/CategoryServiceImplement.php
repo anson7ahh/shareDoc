@@ -71,33 +71,27 @@ class CategoryServiceImplement extends ServiceApi implements CategoryService
       $paginatedItems = $this->categoryRepository->paginateLeaf($id);
       return response()->json(['paginatedItems' => $paginatedItems], 200);
     }
-
-    // Lấy các leaves
     $ImmediateDescendants = $category->getLeaves();
-    // Lấy mảng các ID của ImmediateDescendants
-
-
-    // Lấy dữ liệu đã làm phẳng và phân trang
     $flattenedArray = $this->categoryRepository->paginate($ImmediateDescendants);
 
-    // Tạo đối tượng LengthAwarePaginator để phân trang
+
     $currentPage = LengthAwarePaginator::resolveCurrentPage();
-    $perPage = 10; // so item trong trang
-    $currentPageItems = $flattenedArray->forPage($currentPage, $perPage); // Lấy các mục cho trang hiện tại
+    $perPage = 10;
+    $currentPageItems = $flattenedArray->forPage($currentPage, $perPage);
 
     $paginatedItems = new LengthAwarePaginator(
-      $currentPageItems, // Các mục cho trang hiện tại
-      $flattenedArray->count(), // Tổng số mục
-      $perPage, // Số mục trên mỗi trang
-      $currentPage, // Trang hiện tại
+      $currentPageItems,
+      $flattenedArray->count(),
+      $perPage,
+      $currentPage,
       [
-        'path' => LengthAwarePaginator::resolveCurrentPath(), // Đường dẫn hiện tại
-        'query' => request()->query() // Giữ query params
+        'path' => LengthAwarePaginator::resolveCurrentPath(),
+        'query' => request()->query()
       ]
     );
 
     return response()->json([
-      'paginatedItems' => $paginatedItems, // Dữ liệu phân trang
+      'paginatedItems' => $paginatedItems,
     ], 200);
   }
 }

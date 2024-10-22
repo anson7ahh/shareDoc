@@ -10,14 +10,14 @@ class Favorite extends Model
     use HasFactory;
     protected $fillable = [
         'document_id',
-        'users_id',
+        'user_id',
     ];
-    public function Documnet()
+    public function document()
     {
-        return $this->belongsTo('Document::class');
+        return $this->belongsTo('Document::class', 'document_id');
     }
-    public function User()
+    public function user()
     {
-        return $this->belongsTo('User::class');
+        return $this->belongsTo('User::class', 'user_id');
     }
 }

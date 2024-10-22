@@ -10,10 +10,10 @@ class DocTag extends Model
     use HasFactory;
     public function Document()
     {
-        return $this->belongsTo('Document::class');
+        return $this->belongsTo('Document::class', 'documents_id');
     }
     public function Tag()
     {
-        return $this->belongsTo('Tag::class');
+        return $this->belongsTo('Tag::class', 'tag_id');
     }
 }

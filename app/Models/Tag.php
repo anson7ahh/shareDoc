@@ -10,8 +10,8 @@ class Tag extends Model
     use HasFactory;
     protected $fillable = ['name', 'slug'];
 
-    public function Document_tag()
+    public function Doc_tag()
     {
-        return $this->hasMany('Document_tag::class');
+        return $this->hasMany('Doc_tag::class', 'tag_id');
     }
 }

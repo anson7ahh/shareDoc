@@ -24,7 +24,7 @@ class ViewDocumentEvent
     /**
      * Create a new event instance.
      */
-    public function __construct(Document $document)
+    public function __construct(Document  $document)
     {
         $this->document = $document;
     }

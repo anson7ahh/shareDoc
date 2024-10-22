@@ -42,21 +42,50 @@ class DownloadServiceImplement extends ServiceApi implements DownloadService
     try {
       // Kiểm tra nếu điểm của người dùng không đủ
       if ($downloadDTO->user_total_point < $downloadDTO->document_point) {
-        return response()->json(['error' => 'ban ko du tien'], 422);
+        return [
+          'success' => false,
+          'message' => 'Bạn không đủ tiền. Vui lòng nạp thêm.',
+          'status' => 422
+        ];
       }
-      // Tạo bản ghi download
-      $downloadCreated = $this->mainRepository->CreateDownload($downloadDTO);
 
+      // Kiểm tra nếu người dùng đã tải tài liệu này trước đó
+      $existingDownload = $this->mainRepository->findByDocumentAndUser($downloadDTO);
+
+      if ($existingDownload) {
+        return [
+          'success' => false,
+          'message' => 'Bạn đã tải tài liệu này trước đó.',
+          'status' => 400
+        ];
+      }
+
+      // Tạo bản ghi tải xuống
+      $downloadCreated = $this->mainRepository->createDownload($downloadDTO);
 
       if ($downloadCreated) {
+        // Phát sự kiện nếu tạo thành công
         event(new DownloadSuccessful($downloadDTO));
-        return true;
+        return [
+          'success' => true,
+          'message' => 'Tải xuống thành công.',
+          'status' => 201
+        ];
       }
 
-      return response()->json(['error' => 'An error occurred while creating the comment'], 400);
+      // Nếu không tạo được download
+      return [
+        'success' => false,
+        'message' => 'Đã xảy ra lỗi khi tạo tải xuống.',
+        'status' => 400
+      ];
     } catch (\Exception $e) {
-      return response()->json(['error' => 'An error occurred while creating the comment', 'details' => $e->getMessage()], 500);
-      throw $e;
+      // Trả về thông báo lỗi
+      return [
+        'success' => false,
+        'message' => 'Đã xảy ra lỗi: ' . $e->getMessage(),
+        'status' => $e->getCode() ?: 500
+      ];
     }
   }
 }

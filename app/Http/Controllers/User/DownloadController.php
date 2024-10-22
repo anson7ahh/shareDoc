@@ -49,15 +49,20 @@ class DownloadController extends Controller
                 'user_total_point' => Auth::user()->total_points,
             ]);
 
-            $this->downloadService->createDownload($CreateDownloadDTO);
-            return response()->json([
-                'message' => 'Download created successfully.',
-            ], 201);
+            $result = $this->downloadService->createDownload($CreateDownloadDTO);
+
+            // Kiểm tra kết quả và trả về phản hồi
+            if ($result === true) {
+                return response()->json(['message' => $result['message']], 201);
+            }
+
+            return response()->json(['error' => $result['message']], 400);
         } catch (Exception $e) {
             // Xử lý lỗi từ service
             return response()->json([
-                'Error' => 'Error creating download.',
-            ], 500);
+                'message' => 'Error creating download.',
+                'error' => $e->getMessage(), // Gửi thông tin lỗi về client
+            ], 500); // Trả về mã lỗi 500
         }
     }
 

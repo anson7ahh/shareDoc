@@ -186,13 +186,19 @@ class FileServiceImplement extends ServiceApi implements FileService
     }
   }
 
-  // lay cac gia tri  cua document theo id
+  public function incrementViewDocument($id)
+  {
+    $result = $this->documentRepository->findDocument($id);
+    if ($result) {
+      event(new ViewDocumentEvent($result));
+    }
+    return false;
+  }
   public function getDocumentWithId($id)
   {
     try {
       $results = $this->documentRepository->DocumentItems($id);
       if ($results !== null) {
-        event(new ViewDocumentEvent($results));
         $pageItemsId = $results->category_id;
         $categoryID = $this->categoryRepository->findCategory($pageItemsId);
         $category = $categoryID->getAncestorsAndSelf(['name', 'id']);

@@ -17,12 +17,14 @@ class Download extends Model
     protected $casts = [
         'status' => DownloadStatusEnum::class,
     ];
-    public function User()
+    public function user()
     {
-        return $this->belongsTo('User::class');
+        return $this->belongsTo(User::class, 'user_id');
     }
-    public function Document()
+
+    // Một download thuộc về một tài liệu
+    public function document()
     {
-        return $this->belongsTo('Document::class');
+        return $this->belongsTo(Document::class, 'document_id');
     }
 }

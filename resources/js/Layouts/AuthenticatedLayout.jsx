@@ -1,11 +1,19 @@
+import { useEffect, useState } from "react";
+
 import Dropdown from "@/Components/Dropdown";
 import Image from '@/Components/ImgComponent'
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import formatCurrency from '@/Utils/index'
-import { useState } from "react";
+
 export default function Authenticated({ className = "", user }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
+
+    const [totalPoint, setTotalPoint] = useState(user?.total_points)
+
+    useEffect(() => {
+        setTotalPoint(user?.total_points)
+    }, [user?.total_points])
 
     return (
         <div className={"bg-white" + className}>
@@ -19,7 +27,7 @@ export default function Authenticated({ className = "", user }) {
                             <Image auth={user.img} className="w-8 h-8 rounded-full mr-2" />
 
 
-                            {user.name} {formatCurrency(user.total_points)}
+                            {user.name} {formatCurrency(totalPoint)}
 
                         </button>
                     </span>

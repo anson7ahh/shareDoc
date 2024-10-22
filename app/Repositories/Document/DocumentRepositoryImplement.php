@@ -64,7 +64,6 @@ class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
     // }
     public function DocumentItems($id)
     {
-
         $results =  $this->model::leftJoin('doc_cates', 'doc_cates.document_id', '=', 'documents.id')
             ->leftJoin('categories', 'categories.id', '=', 'doc_cates.category_id')
             ->leftJoin('users', 'users.id', '=', 'documents.users_id')
@@ -102,9 +101,13 @@ class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
                 'documents.id',
                 'users.id',
             )
-
             ->where('documents.id', '=', $id)
             ->first();
         return $results ? $results : null;
+    }
+    public function findDocument($id)
+    {
+        $document = $this->model->findOrFail($id);
+        return  $document;
     }
 }

@@ -23,7 +23,7 @@ class FileDetailController extends Controller
     }
     public function index($id, $slug)
     {
-
+        $this->FileService->incrementViewDocument($id);
 
         $data = $this->FileService->getDocumentWithId($id);
         $comment = $this->CommentService->getComment($id);

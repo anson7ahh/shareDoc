@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     use HasFactory;
-    protected $fillable = ['users_id', 'documents_id', 'parent_id', 'body'];
+    protected $fillable = ['user_id', 'document_id', 'parent_id', 'body'];
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
     public function replies()
     {

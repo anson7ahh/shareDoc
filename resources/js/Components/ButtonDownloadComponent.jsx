@@ -1,43 +1,46 @@
-import { memo, useEffect, useState } from "react";
-
 import { Link } from "@inertiajs/react";
 import axios from "axios";
-import formatCurrency from '@/Utils/index'
+import formatCurrency from '@/Utils/index';
+import { memo } from "react";
 
 function ButtonDownloadComponent({ document, auth }) {
-    console.log((document.documents_id))
-    console.log((document.point))
-    console.log(auth.user.total_points)
+    console.log(document.documents_id);
+    console.log(document);
+    console.log(auth);
+
     const handleClick = async () => {
-        if (Number(document.point) > 0) {
-            const confirmed = window.confirm(`Tài liệu có giá ${formatCurrency(document.point)} . Bạn chắc chắn không?`);
-            if (confirmed) {
-                try {
-                    const response = await axios.post('/download', {
-                        document_id: document.documents_id,
-                        document_point: document.point,
-                    });
-                    console.log("API call thành công!", response.data);
-                } catch (error) {
-                    console.error("API call thất bại!", error);
+        try {
+            // Kiểm tra xem người dùng đã đăng nhập hay chưa
+
+            // Nếu point > 0, hiện cửa sổ xác nhận
+            if (Number(document.point) > 0) {
+                const confirmed = window.confirm(`Tài liệu có giá ${formatCurrency(document.point)}. Bạn chắc chắn không?`);
+                if (!confirmed) {
+                    console.log("Người dùng đã hủy!");
+                    return;
                 }
-            } else {
-                console.log("Người dùng đã hủy!");
             }
-        } else {
             const response = await axios.post('/download', {
                 document_id: document.documents_id,
-                point: document.point,
+                document_point: document.point,
             });
-            console.log("API call thành công!", response.data);
 
+            console.log("API call thành công!", response.data);
+            alert(response.data.message || "Download created successfully.");
+        } catch (error) {
+            console.error(error);
+            if (error.response && error.response.data.error) {
+                alert(error.response.data.error);
+            } else {
+                alert("An unexpected error occurred.");
+            }
         }
     };
 
     return (
         <>
             {
-                auth ? (
+                auth?.user ? (
                     <button
                         onClick={handleClick}
                         className="bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-600 transition-all ease-in-out duration-300 w-full text-center font-semibold shadow-md focus:ring-2 focus:ring-green-300"
@@ -53,8 +56,6 @@ function ButtonDownloadComponent({ document, auth }) {
                     </Link>
                 )
             }
-
-
         </>
     );
 }

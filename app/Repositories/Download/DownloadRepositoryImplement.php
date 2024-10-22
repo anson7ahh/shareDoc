@@ -30,4 +30,10 @@ class DownloadRepositoryImplement extends Eloquent implements DownloadRepository
         ]);
         return $download;
     }
+    public function findByDocumentAndUser(CreateDownloadData $downloadDTO)
+    {
+        return Download::where('documents_id', $downloadDTO->document_id)
+            ->where('users_id', $downloadDTO->user_id,)
+            ->first();
+    }
 }
