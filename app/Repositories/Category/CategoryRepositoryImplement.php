@@ -45,8 +45,7 @@ class CategoryRepositoryImplement extends Eloquent  implements CategoryRepositor
     }
     public function findCategory($id)
     {
-        $category = $this->model->find($id);
-        return $category ? $category : null;
+        return $this->model->find($id);
     }
 
     public function paginate($ImmediateDescendants)

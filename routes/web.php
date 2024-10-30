@@ -11,6 +11,7 @@ use App\Http\Controllers\User\CommentController;
 use App\Http\Controllers\User\DownloadController;
 use App\Http\Controllers\User\FileDetailController;
 use App\Http\Controllers\Auth\AuthenticateProviderController;
+use App\Http\Controllers\User\CollectionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,14 +55,19 @@ Route::prefix('/comment')->group(function () {
     Route::post('/{commentId}', [CommentController::class, 'create']);
 });
 Route::prefix('/download')->group(function () {
+
     Route::post('/', [DownloadController::class, 'store']);
+    Route::get('/uploaded', [DownloadController::class, 'store'])->name('store');
 });
 Route::prefix('/auth/{provider}')->middleware('cors')->group(function () {
     Route::get('/redirect', [AuthenticateProviderController::class, 'redirect']);
     Route::get('/callback', [AuthenticateProviderController::class, 'callback']);
 });
-
+Route::prefix('/collection')->group(function () {
+    Route::get('/', [CollectionController::class, 'index'])->name('collection.index');
+});
 Route::middleware('auth')->group(function () {
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

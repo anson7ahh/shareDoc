@@ -4,6 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Tag;
+use App\Models\Document;
+use App\Models\Download;
+use App\Models\Favorite;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -49,21 +53,21 @@ class User extends Authenticatable
 
     ];
 
-    public function Document()
+    public function document()
     {
-        return $this->hasMany('Document::class', 'user_id');
+        return $this->hasMany(Document::class, 'users_id');
     }
 
-    public function Download()
+    public function download()
     {
-        return $this->hasMany('Download::class', 'user_id');
+        return $this->hasMany(Download::class, 'user_id');
     }
-    public function Tag()
+    public function tag()
     {
-        return $this->hasMany('Tag::class', 'user_id');
+        return $this->hasMany(Tag::class, 'user_id');
     }
-    public function Favorite()
+    public function favorite()
     {
-        return $this->hasMany('Favorite::class', 'user_id');
+        return $this->hasMany(Favorite::class, 'user_id');
     }
 }

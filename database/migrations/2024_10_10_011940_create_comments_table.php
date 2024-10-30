@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
+            $table->index(['user_id', 'document_id']);
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('document_id');
             $table->integer('parent_id')->unsigned()->nullable();

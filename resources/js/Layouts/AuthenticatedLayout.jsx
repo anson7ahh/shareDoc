@@ -32,9 +32,16 @@ export default function Authenticated({ className = "", user }) {
                         </button>
                     </span>
                 </Dropdown.Trigger>
-                <Dropdown.Content className="w-48">
-                    <Dropdown.Link href={route("profile.edit")}>
+                <Dropdown.Content className="w-[250px]">
+                    <Dropdown.Link className='w-full' href={route("profile.edit")}>
                         Profile
+                    </Dropdown.Link>
+                    <Dropdown.Link
+                        href={route('collection.index')}
+                        method="get"
+                        as="button"
+                    >
+                        Collection
                     </Dropdown.Link>
                     <Dropdown.Link
                         href={route("logout")}
@@ -43,6 +50,8 @@ export default function Authenticated({ className = "", user }) {
                     >
                         Log Out
                     </Dropdown.Link>
+
+
                 </Dropdown.Content>
             </Dropdown>
 

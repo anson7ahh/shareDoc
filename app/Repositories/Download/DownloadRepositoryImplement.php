@@ -3,8 +3,9 @@
 namespace App\Repositories\Download;
 
 use App\Models\Download;
-use App\Data\CreateDownloadData;
+use App\Data\DownloadedData;
 
+use App\Data\CreateDownloadData;
 use LaravelEasyRepository\Implementations\Eloquent;
 
 class DownloadRepositoryImplement extends Eloquent implements DownloadRepository
@@ -25,15 +26,19 @@ class DownloadRepositoryImplement extends Eloquent implements DownloadRepository
     public function CreateDownload(CreateDownloadData $downloadDTO)
     {
         $download = $this->model->create([
-            'users_id' => $downloadDTO->user_id,
-            'documents_id' => $downloadDTO->document_id,
+            'user_id' => $downloadDTO->user_id,
+            'document_id' => $downloadDTO->document_id,
         ]);
         return $download;
     }
     public function findByDocumentAndUser(CreateDownloadData $downloadDTO)
     {
-        return Download::where('documents_id', $downloadDTO->document_id)
-            ->where('users_id', $downloadDTO->user_id,)
+        return Download::where('document_id', $downloadDTO->document_id)
+            ->where('user_id', $downloadDTO->user_id,)
             ->first();
+    }
+    public function getDownloaded(DownloadedData $data)
+    {
+        return Download::where('user_id', $data->user_id);
     }
 }

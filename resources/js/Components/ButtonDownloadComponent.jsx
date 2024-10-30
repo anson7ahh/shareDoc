@@ -21,7 +21,7 @@ function ButtonDownloadComponent({ document, auth }) {
                 }
             }
             const response = await axios.post('/download', {
-                document_id: document.documents_id,
+                document_id: document.id,
                 document_point: document.point,
             });
 

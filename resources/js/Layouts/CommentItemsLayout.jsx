@@ -19,10 +19,6 @@ const CommentItems = ({ DocumentId, auth }) => {
         dispatch(setCommentId(id));
     };
 
-
-
-
-
     return (
         <div className="space-y-6 max-h-[500px] overflow-y-auto p-4 border border-gray-200 rounded-lg bg-white shadow-lg">
             {commentParentItems.map(comment => (
@@ -49,10 +45,9 @@ const CommentItems = ({ DocumentId, auth }) => {
 
                     {comment.showInputReply && (
                         <div className="ml-12">
-                            <ReplyCommentsLayout auth={auth} ReplyUserName={comment?.name} DocumentId={DocumentId} />
+                            <ReplyCommentsLayout auth={auth} ReplyUserName={comment.user} DocumentId={DocumentId} />
                         </div>
                     )}
-
                     {replyCommentItems.length > 0 && replyCommentItems.filter(reply => reply.parent_id === comment.id).length > 0 && (
                         <div className="ml-12 mt-3">
                             <button onClick={() => handleShowReply(comment.id)} className="text-blue-500 text-sm">

@@ -2,6 +2,7 @@
 
 namespace App\Services\Comment;
 
+use App\Data\CreateCommentData;
 use Illuminate\Support\Facades\Auth;
 use LaravelEasyRepository\ServiceApi;
 use App\Repositories\Comment\CommentRepository;
@@ -32,22 +33,19 @@ class CommentServiceImplement extends ServiceApi implements CommentService
     $this->CommentRepository = $CommentRepository;
   }
 
-  public function createComment($users_id, $documents_id, $body)
+  public function createComment(CreateCommentData $CreateCommentData)
   {
     try {
-      // Thực hiện tạo bình luận
-      $newComment = $this->CommentRepository->CreateComment($users_id, $body, $documents_id);
 
-      // Kiểm tra nếu bình luận được tạo thành công
+      $newComment = $this->CommentRepository->CreateComment($CreateCommentData);
       if ($newComment != false) {
 
         return $this->CommentRepository->newComment($newComment->documents_id);
       }
 
-      // Nếu tạo bình luận thất bại, trả về lỗi
       return response()->json(['error' => 'Failed to create comment'], 400);
     } catch (\Exception $e) {
-      // Xử lý ngoại lệ nếu xảy ra lỗi trong quá trình tạo bình luận
+
       return response()->json(['error' => 'An error occurred while creating the comment', 'details' => $e->getMessage()], 500);
     }
   }

@@ -8,7 +8,7 @@ export const createCommentParent = createAsyncThunk(
     async ({ documentId, content }, { rejectWithValue }) => {
         try {
             const response = await axios.post('/comment', {
-                documents_id: documentId,
+                document_id: documentId,
                 body: content,
             }, {
                 headers: { 'Content-Type': 'application/json' },

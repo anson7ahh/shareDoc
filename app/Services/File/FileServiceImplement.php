@@ -197,11 +197,14 @@ class FileServiceImplement extends ServiceApi implements FileService
   public function getDocumentWithId($id)
   {
     try {
+
       $results = $this->documentRepository->DocumentItems($id);
+
       if ($results !== null) {
-        $pageItemsId = $results->category_id;
+        $pageItemsId  = $results->categories->pluck('id');
+        Log::info('results:', ['results' => $results]);
         $categoryID = $this->categoryRepository->findCategory($pageItemsId);
-        $category = $categoryID->getAncestorsAndSelf(['name', 'id']);
+        $category = $categoryID[0]->getAncestorsAndSelf(['name', 'id']);
         return response()->json(['status' => 'success', 'parentCategory' => $category, 'pageItems' => $results], 200);
       }
       return response()->json(['status' => 'error', 'message' => 'ko thay id.'], 404);

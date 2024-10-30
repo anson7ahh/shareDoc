@@ -2,53 +2,50 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Models\Comment;
+use Inertia\Inertia;
+use App\Data\DownloadedData;
 use Illuminate\Http\Request;
-use App\Data\CreateCommentData;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Services\Comment\CommentService;
-use App\Http\Requests\User\CommentRequest;
-use App\Http\Requests\User\ReplyCommentRequest;
+use App\Services\Download\DownloadService;
 
-class CommentController extends Controller
+class CollectionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    protected $downloadService;
 
-    protected $CommentService;
-
-    public function __construct(CommentService $commentService)
+    public function __construct(DownloadService $downloadService)
     {
-        $this->CommentService = $commentService;
+        $this->downloadService = $downloadService;
     }
     public function index()
     {
-        //
+        $userId = Auth::user()?->id;
+        $DownloadDTO = DownloadedData::from([
+            'user_id' => $userId,
+        ]);
+        $downloaded = $this->downloadService->getDocDownloaded($DownloadDTO);
+        return Inertia::render('User/Collections', [
+            'downloaded' => $downloaded
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(ReplyCommentRequest $request, $CommentId)
+    public function create()
     {
-
-        return $this->CommentService->CreateReplyComment($request, $CommentId);
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CommentRequest $request)
+    public function store(Request $request)
     {
-        $CreateCommentData = CreateCommentData::from([
-            'document_id' => $request->input('document_id'),
-            'body' => $request->input('body'),
-            'user_id' => Auth::user()->id,
-
-        ]);
-        return $this->CommentService->CreateComment($CreateCommentData);
+        //
     }
 
     /**

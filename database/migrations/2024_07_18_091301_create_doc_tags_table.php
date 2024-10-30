@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('doc_tags', function (Blueprint $table) {
-            $table->id();
+            $table->primary(['tag_id', 'document_id']);
             $table->unsignedBigInteger('tag_id');
             $table->unsignedBigInteger('document_id');
 

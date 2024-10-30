@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Category;
+use App\Models\Document;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DocCate extends Model
 {
@@ -15,10 +17,10 @@ class DocCate extends Model
 
     public function document()
     {
-        return $this->belongsTo('Document::class', 'document_id');
+        return $this->belongsTo(Document::class, 'document_id');
     }
     public function category()
     {
-        return $this->belongsTo('Category::class', 'category_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 }

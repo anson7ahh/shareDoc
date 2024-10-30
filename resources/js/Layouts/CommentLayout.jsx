@@ -7,6 +7,7 @@ import Image from '@/Components/ImgComponent';
 import { Link } from "@inertiajs/react";
 
 const Comment = ({ DocumentId, auth }) => {
+
     const dispatch = useDispatch();
     const { contentCommentParent, commentParentItems, allComment } = useSelector((state) => state.comment);
     const handleClick = () => {
@@ -15,7 +16,7 @@ const Comment = ({ DocumentId, auth }) => {
             content: contentCommentParent,
         }));
     }
-
+    console.log('commentParentItems', commentParentItems)
     const handleCommentChange = (e) => {
         dispatch(setContentCommentParent(e.target.value));
     };

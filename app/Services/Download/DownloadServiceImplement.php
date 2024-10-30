@@ -3,6 +3,7 @@
 namespace App\Services\Download;
 
 use Exception;
+use App\Data\DownloadedData;
 use App\Data\CreateDownloadData;
 use App\DTOs\Download\DownloadDTO;
 use App\Events\DownloadSuccessful;
@@ -87,5 +88,9 @@ class DownloadServiceImplement extends ServiceApi implements DownloadService
         'status' => $e->getCode() ?: 500
       ];
     }
+  }
+  public function getDocDownloaded(DownloadedData $data)
+  {
+    return $this->mainRepository->getDownloaded($data);
   }
 }

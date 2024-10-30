@@ -17,7 +17,7 @@ class DocCateBuilder
 
             ->leftJoin('documents', 'documents.id', '=', 'doc_cates.document_id')
             ->leftJoin('users', 'users.id', '=', 'documents.users_id')
-            ->leftJoin('downloads', 'downloads.documents_id', '=', 'documents.id');
+            ->leftJoin('downloads', 'downloads.document_id', '=', 'documents.id');
     }
 
     public function selectFields()
@@ -29,7 +29,7 @@ class DocCateBuilder
             'users.name',
             'documents.slug',
             'documents.id',
-            DB::raw('COUNT(downloads.documents_id) AS total_download')
+            DB::raw('COUNT(downloads.document_id) AS total_download')
         );
         return $this;
     }
@@ -66,7 +66,7 @@ class DocCateBuilder
             'documents.description',
             'users.name',
             'categories.id as category_id',
-            DB::raw('COUNT(downloads.documents_id) AS total_download')
+            DB::raw('COUNT(downloads.document_id) AS total_download')
 
         );
         return $this;

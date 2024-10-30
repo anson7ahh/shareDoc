@@ -2,11 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\User;
+use App\Models\DocTag;
+use App\Models\Comment;
+use App\Models\DocCate;
+use App\Models\Download;
+use App\Models\Favorite;
 use App\Enums\DocumentStatusEnum;
 use App\Enums\DocumentFavoriteEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Document extends Model
 {
@@ -29,31 +36,34 @@ class Document extends Model
     ];
     public function user()
     {
-        return $this->belongsTo('User::class', 'user_id');
+        return $this->belongsTo(User::class, 'users_id');
     }
-    public function download()
+    public function downloads()
     {
-        return $this->hasMany('Download::class', 'document_id');
+        return $this->hasMany(Download::class, 'document_id');
     }
 
     public function docCate()
     {
-        return $this->hasMany('DocCate::class', 'document_id');
+        return $this->hasMany(DocCate::class, 'document_id');
     }
     public function docTag()
     {
-        return $this->hasMany('DocTag::class', 'document_id');
+        return $this->hasMany(DocTag::class, 'document_id');
     }
     public function favorite()
     {
-        return $this->hasMany('favorite::class', 'document_id');
+        return $this->hasMany(Favorite::class, 'document_id');
     }
 
     public function comments()
     {
         return $this->hasMany(Comment::class)->whereNull('parent_id');
     }
-
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class, 'doc_cates', 'document_id', 'category_id');
+    }
     protected static function boot()
     {
         parent::boot();

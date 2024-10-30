@@ -10,6 +10,7 @@ use Illuminate\Support\Arr;
 use App\Builders\FileBuilder;
 use App\Builders\DocCateBuilder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use LaravelEasyRepository\Implementations\Eloquent;
 
 class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
@@ -56,58 +57,35 @@ class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
         }
         return null;
     }
-    // public function featuredDocument()
-    // {
-    //     $oneWeekAgo = Carbon::now()->subWeek();
-    //     $documents = $this->model->where('created_at', '>=', $oneWeekAgo)->orderBy('view', 'asc')->get();
-    //     return $documents;
-    // }
+
     public function DocumentItems($id)
     {
-        $results =  $this->model::leftJoin('doc_cates', 'doc_cates.document_id', '=', 'documents.id')
-            ->leftJoin('categories', 'categories.id', '=', 'doc_cates.category_id')
-            ->leftJoin('users', 'users.id', '=', 'documents.users_id')
-            ->leftJoin(
-                'downloads',
-                'downloads.documents_id',
-                '=',
-                'documents.id'
-            )
 
-            ->select(
-                'users.id as user_id',
-                'documents.title',
-                'documents.format',
-                'documents.content',
-                'documents.view',
-                'documents.id as documents_id',
-                'documents.source',
-                'documents.point',
-                'documents.description',
-                'users.name',
-                'categories.id as category_id',
-                DB::raw('COUNT(downloads.documents_id) AS total_download')
-            )
-            ->groupBy(
-                'documents.title',
-                'documents.format',
-                'documents.content',
-                'documents.view',
-                'documents.source',
-                'documents.point',
-                'documents.description',
-                'users.name',
-                'categories.id',
-                'documents.id',
-                'users.id',
-            )
-            ->where('documents.id', '=', $id)
+        return $this->model::with([
+            'categories',
+            'user' => function ($query) {
+                $query->select('id', 'name');
+            },
+
+        ])
+            ->withCount(['downloads as total_download'])
+            // ->select(
+            //     'id',
+            //     'id as document_id',
+            //     'title',
+            //     'format',
+            //     'content',
+            //     'view',
+            //     'source',
+            //     'point',
+            //     'description',
+            //     'users_id as users_id'
+            // )
+            ->where('id', $id)
             ->first();
-        return $results ? $results : null;
     }
     public function findDocument($id)
     {
-        $document = $this->model->findOrFail($id);
-        return  $document;
+        return $this->model->findOrFail($id);
     }
 }

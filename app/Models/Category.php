@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use Baum\Node;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\DocCate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Category extends Node
 {
@@ -18,8 +19,12 @@ class Category extends Node
     ];
 
 
-    public function DocCate()
+    public function docCates()
     {
-        return $this->hasMany('DocCate::class', 'category_id');
+        return $this->hasMany(DocCate::class, 'category_id');
+    }
+    public function documents(): BelongsToMany
+    {
+        return $this->belongsToMany(Document::class, 'doc_cates', 'category_id', 'document_id');
     }
 }

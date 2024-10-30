@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('document_id');
-            $table->enum('status', DownloadStatusEnum::getValues())->default(DownloadStatusEnum::show);
+            $table->softDeletes();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->foreign('document_id')->references('id')->on('documents')->onDelete('cascade')

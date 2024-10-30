@@ -52,10 +52,8 @@ class CategoryServiceImplement extends ServiceApi implements CategoryService
     if ($category !== null) {
       // Lấy tất cả tổ tiên và chính danh mục đang truy vấn, bao gồm các trường 'name' và 'id'
       $parentCategory = $category->getAncestorsAndSelf(['name', 'id']);
-
       return response()->json(['parentCategory' => $parentCategory], 200);
     }
-
     return response()->json(['error' => 'Danh mục không tồn tại'], 404);
   }
 

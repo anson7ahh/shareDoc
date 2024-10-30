@@ -2,21 +2,22 @@
 
 namespace App\Models;
 
-use App\Enums\DownloadStatusEnum;
+
+use App\Models\User;
+use App\Models\Document;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Download extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $fillable = [
-        'users_id',
-        'documents_id',
-        'status',
+        'user_id',
+        'document_id',
     ];
-    protected $casts = [
-        'status' => DownloadStatusEnum::class,
-    ];
+    protected $dates = ['deleted_at'];
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

@@ -8,7 +8,7 @@ import { toggleShowInputReplyCommentItems } from '@/redux/CommentSlice';
 const ReplyCommentItemsLayout = ({ comment, auth, DocumentId }) => {
     const { replyCommentItems } = useSelector((state) => state.comment);
     const dispatch = useDispatch();
-
+    console.log('replyCommentItems', replyCommentItems)
     const handleShowInputReplyCommentItems = (id) => {
         dispatch(toggleShowInputReplyCommentItems({ id }));
     };
@@ -36,7 +36,7 @@ const ReplyCommentItemsLayout = ({ comment, auth, DocumentId }) => {
                     <div className='w-full'>
                         {replyComment?.showInputReplyCommentItem != false && (
                             <div className='w-full'>
-                                <ReplyCommentsLayout auth={auth} commentId={comment.id} DocumentId={DocumentId} ReplyUserName={replyComment?.name} />
+                                <ReplyCommentsLayout auth={auth} DocumentId={DocumentId} ReplyUserName={replyComment?.user} />
                             </div>
                         )}
                     </div>

@@ -18,7 +18,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 
 const FileDetail = ({ auth, data, comment }) => {
-    console.log('auth', auth)
+    console.log('data', comment)
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -27,6 +27,7 @@ const FileDetail = ({ auth, data, comment }) => {
         }
     }, [comment]);
     const DocumentItems = data.original?.pageItems;
+    console.log('DocumentItems', DocumentItems)
     return (
         <>
             <header>
@@ -57,7 +58,7 @@ const FileDetail = ({ auth, data, comment }) => {
                         <p className="text-xl font-semibold text-gray-800">Bình luận</p>
                     </div>
                     <div>
-                        <CommentLayout auth={auth?.user} DocumentId={DocumentItems?.document_id} />
+                        <CommentLayout auth={auth?.user} DocumentId={DocumentItems?.id} />
                     </div>
                 </div>
             </main>
