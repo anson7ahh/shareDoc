@@ -15,8 +15,8 @@ class DownloadsSeeder extends Seeder
     public function run(): void
     {
         DB::table('downloads')->insert([
-            'documents_id' => 214,
-            'users_id' => 1,
+            'document_id' => 1,
+            'user_id' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);

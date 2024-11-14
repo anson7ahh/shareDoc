@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
+            $table->softDeletes();
             $table->string('title')->nullable();
             $table->string('slug')->nullable();
             $table->string('format');

@@ -56,7 +56,7 @@ class CategoryServiceImplement extends ServiceApi implements CategoryService
     }
     return response()->json(['error' => 'Danh mục không tồn tại'], 404);
   }
-
+  //phan trang
   public function getDocWithCate($id)
   {
     $category = $this->categoryRepository->findCategory($id);
@@ -74,7 +74,7 @@ class CategoryServiceImplement extends ServiceApi implements CategoryService
 
 
     $currentPage = LengthAwarePaginator::resolveCurrentPage();
-    $perPage = 10;
+    $perPage = 1;
     $currentPageItems = $flattenedArray->forPage($currentPage, $perPage);
 
     $paginatedItems = new LengthAwarePaginator(

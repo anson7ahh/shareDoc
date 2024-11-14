@@ -1,25 +1,29 @@
 <?php
 
-namespace App\Services\File;
+namespace App\Services\Document;
 
 use Illuminate\Support\Str;
+use App\Data\CollectionData;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\Settings;
+use App\Events\WordFileUploaded;
 use PhpOffice\PhpWord\IOFactory;
 use App\Events\ViewDocumentEvent;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use LaravelEasyRepository\ServiceApi;
+use App\Events\DocumentDeletePathEvent;
 use Illuminate\Support\Facades\Storage;
+use App\Data\CollectionUploadDeleteData;
 use PhpOffice\PhpWord\Writer\PDF\DomPDF;
-use App\Repositories\File\FileRepository;
 use App\Repositories\DocCate\DocCateRepository;
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Document\DocumentRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 
 
-class FileServiceImplement extends ServiceApi implements FileService
+class DocumentServiceImplement extends ServiceApi implements DocumentService
 {
 
   /**
@@ -79,38 +83,17 @@ class FileServiceImplement extends ServiceApi implements FileService
           'format' => $format,
           'users_id' => $user->id
         ]);
-
-        // Lưu tệp Word nếu định dạng không phải là PDF
         if ($format !== 'pdf') {
-          // Lưu file Word
           $file->storeAs('public/fileWord', $content . '.' . $format, 'local');
           $filePath = storage_path('app/public/fileWord/' . $content . '.' . $format);
 
-          try {
-            // Cấu hình PdfRenderer để sử dụng mPDF
-            \PhpOffice\PhpWord\Settings::setPdfRendererPath(base_path('vendor/mpdf/mpdf'));
-            \PhpOffice\PhpWord\Settings::setPdfRendererName('MPDF');
-
-            $Content = \PhpOffice\PhpWord\IOFactory::load($filePath);
-            $PDFWriter = \PhpOffice\PhpWord\IOFactory::createWriter($Content, 'PDF');
-
-            // Chuyển đổi sang PDF
-            $pdfFileName = $content . '.pdf';
-            $PDFWriter->save(storage_path('app/public/file/' . $pdfFileName));
-          } catch (\Exception $e) {
-            Log::error('Lỗi khi chuyển Word sang PDF: ' . $e->getMessage());
-            return response()->json([
-              'status' => 'error',
-              'message' => 'Không thể chuyển file Word sang PDF.',
-              'error' => $e->getMessage()
-            ], 500);
-          }
-
+          // Gọi Event
+          event(new WordFileUploaded($filePath, $content));
           return response()->json([
             'status' => 'success',
             'message' => 'File được tải lên thành công.',
             'documentId' => $newDocument->id,
-            'pdf_path' => Storage::url('file/' . $pdfFileName) // Đường dẫn đến PDF đã tạo
+
           ], 201);
         } else {
           // Lưu file PDF
@@ -185,7 +168,7 @@ class FileServiceImplement extends ServiceApi implements FileService
       return response()->json(['status' => 'error', 'message' => 'Lỗi nội bộ server.'], 500);
     }
   }
-
+  //tinh view
   public function incrementViewDocument($id)
   {
     $result = $this->documentRepository->findDocument($id);
@@ -194,6 +177,7 @@ class FileServiceImplement extends ServiceApi implements FileService
     }
     return false;
   }
+  //lay tai lieu theo id
   public function getDocumentWithId($id)
   {
     try {
@@ -202,7 +186,7 @@ class FileServiceImplement extends ServiceApi implements FileService
 
       if ($results !== null) {
         $pageItemsId  = $results->categories->pluck('id');
-        Log::info('results:', ['results' => $results]);
+
         $categoryID = $this->categoryRepository->findCategory($pageItemsId);
         $category = $categoryID[0]->getAncestorsAndSelf(['name', 'id']);
         return response()->json(['status' => 'success', 'parentCategory' => $category, 'pageItems' => $results], 200);
@@ -212,5 +196,47 @@ class FileServiceImplement extends ServiceApi implements FileService
       Log::error('Lỗi nội bộ server: ' . $e->getMessage());
       return response()->json(['status' => 'error', 'message' => 'Lỗi  server.'], 500);
     }
+  }
+
+
+
+  //lay tai lieu user da tai
+  public function getDocUploaded(CollectionData $data)
+  {
+
+    return $this->documentRepository->getUploaded($data);
+  }
+
+
+
+  public function deleteDocUploaded(CollectionUploadDeleteData $data)
+  {
+    try {
+      // Tìm tài liệu tải lên dựa trên dữ liệu đầu vào
+      $result = $this->documentRepository->findDocUpload($data);
+
+      // Ghi log thông tin về dữ liệu tìm thấy
+      Log::info('Attempting to delete document', ['result' => $result]);
+
+      // Kiểm tra trạng thái của tài liệu
+      if ($result->status == "notreviewed") {
+        $this->documentRepository->forceDeleteDocUploaded($result);
+        event(new DocumentDeletePathEvent($result));
+
+        return response()->json(['message' => 'success'], 200);
+      }
+
+      // Xóa mềm nếu tài liệu đã được xét duyệt
+      $this->documentRepository->softDeleteDocUploaded($result);
+
+      return response()->json(['message' => 'Tài liệu đã được xét duyệt. Cần admin xác nhận'], 200);
+    } catch (ModelNotFoundException $e) {
+      Log::error('Document not found for ID', ['documentId' => $data->documentId]);
+      return response()->json(['message' => 'Không tìm thấy ID.'], 404);
+    }
+  }
+  public function getFeaturedDocument()
+  {
+    return $this->documentRepository->FeaturedDocument();
   }
 }

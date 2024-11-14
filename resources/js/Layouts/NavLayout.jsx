@@ -3,7 +3,7 @@ import "../../css/app.css";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import Authenticated from "./AuthenticatedLayout";
 import { Link } from "@inertiajs/react";
-import MenuButton from "./ButtonMenuLayout";
+import MenuButton from "@/Components/ButtonMenuComponent";
 import React from "react";
 import UploadButton from "@/Components/ButtonUploadComponent";
 

@@ -8,7 +8,7 @@ import { Link } from "@inertiajs/react";
 const ReplyCommentsLayout = ({ DocumentId, auth, ReplyUserName }) => {
     const dispatch = useDispatch();
     const { contentReplyComment, commentId } = useSelector((state) => state.comment);
-    console.log('ReplyUserName', ReplyUserName)
+
     useEffect(() => {
         if (ReplyUserName) {
             dispatch(setContentReplyComment(`@${ReplyUserName?.name} `));

@@ -7,10 +7,13 @@ use Carbon\Carbon;
 use App\Models\DocCate;
 use App\Models\Document;
 use Illuminate\Support\Arr;
+use App\Data\CollectionData;
 use App\Builders\FileBuilder;
 use App\Builders\DocCateBuilder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+use App\Data\CollectionUploadDeleteData;
 use LaravelEasyRepository\Implementations\Eloquent;
 
 class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
@@ -69,23 +72,54 @@ class DocumentRepositoryImplement extends Eloquent implements DocumentRepository
 
         ])
             ->withCount(['downloads as total_download'])
-            // ->select(
-            //     'id',
-            //     'id as document_id',
-            //     'title',
-            //     'format',
-            //     'content',
-            //     'view',
-            //     'source',
-            //     'point',
-            //     'description',
-            //     'users_id as users_id'
-            // )
+
             ->where('id', $id)
             ->first();
     }
     public function findDocument($id)
     {
         return $this->model->findOrFail($id);
+    }
+    public function getUploaded(CollectionData $data)
+    {
+        return $this->model::withTrashed()->where('users_id', $data->user_id)->get();
+    }
+
+
+    public function findDocUpload(CollectionUploadDeleteData $data)
+    {
+        return $this->model->findOrFail($data->documentId);
+    }
+    public function softDeleteDocUploaded(Document $data)
+    {
+        return $data->delete();
+    }
+    public function forceDeleteDocUploaded(Document $data)
+    {
+        return $data->forceDelete();
+    }
+    public function FeaturedDocument()
+    {
+        // Đặt tên khóa cache
+        $cacheKey = 'featured_documents_week_' . Carbon::now()->format('YW'); // Tạo khóa cache theo tuần (Year-Week)
+
+        // Kiểm tra nếu dữ liệu đã có trong cache Redis
+        return Cache::store('redis')->remember($cacheKey, 10, function () {
+            // Lấy ngày bắt đầu và kết thúc của tuần hiện tại
+            $startOfWeek = Carbon::now()->startOfWeek(); // Chủ nhật
+            $endOfWeek = Carbon::now()->endOfWeek(); // Thứ bảy
+
+            // Truy vấn các tài liệu nổi bật trong tuần
+            return $this->model::with([
+                'user' => function ($query) {
+                    $query->select('id', 'name');
+                },
+            ])
+                ->withCount(['downloads as total_download'])
+                ->whereBetween('created_at', [$startOfWeek, $endOfWeek])
+                ->orderBy('view', 'desc')
+                ->limit(10)
+                ->get();
+        });
     }
 }

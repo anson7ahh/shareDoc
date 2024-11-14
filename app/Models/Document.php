@@ -12,12 +12,14 @@ use App\Enums\DocumentStatusEnum;
 use App\Enums\DocumentFavoriteEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Document extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $fillable = [
         'title',
         'slug',
@@ -31,6 +33,7 @@ class Document extends Model
         'users_id',
 
     ];
+    protected $dates = ['deleted_at'];
     protected $casts = [
         'status' => DocumentStatusEnum::class,
     ];
@@ -63,18 +66,5 @@ class Document extends Model
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class, 'doc_cates', 'document_id', 'category_id');
-    }
-    protected static function boot()
-    {
-        parent::boot();
-        static::deleting(function ($content) {
-            // Xóa file từ storage trước khi xóa bản ghi khỏi database
-            $filePath = 'public/file/' . $content;
-            if (Storage::disk('local')->exists($filePath)) {
-                Storage::disk('local')->delete($filePath);
-                return true;
-            }
-            return false;
-        });
     }
 }

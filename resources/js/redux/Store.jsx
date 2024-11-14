@@ -1,3 +1,4 @@
+import AdminDashboardSlice from './AdminDashboardSlice';
 import commentSlice from './CommentSlice'
 import { configureStore } from '@reduxjs/toolkit';
 import fileSlice from './FileSlice';
@@ -5,7 +6,8 @@ import fileSlice from './FileSlice';
 const store = configureStore({
     reducer: {
         file: fileSlice,
-        comment: commentSlice
+        comment: commentSlice,
+        adminDashboard: AdminDashboardSlice,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

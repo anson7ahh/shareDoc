@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
 
 import Category from "@/Components/CategoryParentComponent";
-import formatCurrency from '@/Utils/index'
 
 export default function FormUploadFile() {
     const dispatch = useDispatch();
@@ -25,8 +24,9 @@ export default function FormUploadFile() {
         dispatch(setDescription(description));
     }
     const handleChangePoint = (e) => {
-        const point = e.target.value
-        dispatch(setPoint(point));
+        const value = e.target.value;
+
+        dispatch(setPoint(value));
     }
     const handleChangeSource = (e) => {
         const source = e.target.value

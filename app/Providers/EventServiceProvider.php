@@ -5,7 +5,9 @@ namespace App\Providers;
 use App\Events\ViewDocumentEvent;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
+use App\Events\DocumentDeletePathEvent;
 use App\Listeners\IncrementDocumentView;
+use App\Listeners\DocumentDeletePathListener;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -28,6 +30,12 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\DownloadSuccessful::class => [
             \App\Listeners\UpdateUserBalance::class,
 
+        ],
+        'App\Events\WordFileUploaded' => [
+            'App\Listeners\ConvertWordToPdf',
+        ],
+        DocumentDeletePathEvent::class => [
+            DocumentDeletePathListener::class,
         ],
 
     ];

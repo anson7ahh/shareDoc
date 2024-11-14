@@ -3,10 +3,12 @@
 namespace App\Services\Download;
 
 use Exception;
+use App\Data\CollectionData;
 use App\Data\DownloadedData;
 use App\Data\CreateDownloadData;
 use App\DTOs\Download\DownloadDTO;
 use App\Events\DownloadSuccessful;
+use Illuminate\Support\Facades\Log;
 use LaravelEasyRepository\ServiceApi;
 use App\DTOs\Download\CreateDownloadDTO;
 use App\Repositories\Download\DownloadRepository;
@@ -60,12 +62,8 @@ class DownloadServiceImplement extends ServiceApi implements DownloadService
           'status' => 400
         ];
       }
-
-      // Tạo bản ghi tải xuống
       $downloadCreated = $this->mainRepository->createDownload($downloadDTO);
-
       if ($downloadCreated) {
-        // Phát sự kiện nếu tạo thành công
         event(new DownloadSuccessful($downloadDTO));
         return [
           'success' => true,
@@ -73,15 +71,12 @@ class DownloadServiceImplement extends ServiceApi implements DownloadService
           'status' => 201
         ];
       }
-
-      // Nếu không tạo được download
       return [
         'success' => false,
         'message' => 'Đã xảy ra lỗi khi tạo tải xuống.',
         'status' => 400
       ];
     } catch (\Exception $e) {
-      // Trả về thông báo lỗi
       return [
         'success' => false,
         'message' => 'Đã xảy ra lỗi: ' . $e->getMessage(),
@@ -89,8 +84,10 @@ class DownloadServiceImplement extends ServiceApi implements DownloadService
       ];
     }
   }
-  public function getDocDownloaded(DownloadedData $data)
+  // lay tai lieu user da tai theo id
+  public function getDocDownloaded(CollectionData $data)
   {
+
     return $this->mainRepository->getDownloaded($data);
   }
 }

@@ -4,14 +4,17 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\FileController;
 use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\User\CommentController;
+use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\DownloadController;
-use App\Http\Controllers\User\FileDetailController;
-use App\Http\Controllers\Auth\AuthenticateProviderController;
 use App\Http\Controllers\User\CollectionController;
+use App\Http\Controllers\User\FileDetailController;
+use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\USer\CollectionUploadController;
+use App\Http\Controllers\Auth\AuthenticateProviderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +68,8 @@ Route::prefix('/auth/{provider}')->middleware('cors')->group(function () {
 });
 Route::prefix('/collection')->group(function () {
     Route::get('/', [CollectionController::class, 'index'])->name('collection.index');
+    Route::get('/{documentId}', [CollectionController::class, 'show']);
+    Route::delete('/{id}', [CollectionUploadController::class, 'destroy']);
 });
 Route::middleware('auth')->group(function () {
 
@@ -72,5 +77,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::prefix('admin')->middleware('auth.admin')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/userManagement', [UserManagementController::class, 'index']);
+});
+
+
+
 
 require __DIR__ . '/auth.php';

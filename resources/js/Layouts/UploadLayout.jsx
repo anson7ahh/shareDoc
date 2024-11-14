@@ -6,7 +6,7 @@ import React from 'react';
 import { memo } from 'react';
 
 const UploadLayout = () => {
-    const { file, progress, uploadStatus, message } = useSelector((state) => state.file);
+    const { progress, uploadStatus, message } = useSelector((state) => state.file);
     const dispatch = useDispatch();
 
     const handleChangeFile = (e) => {

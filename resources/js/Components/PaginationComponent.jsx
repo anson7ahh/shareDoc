@@ -4,7 +4,7 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { memo } from 'react';
 
-const PaginationOutlined = ({ count, page, onChange }) => { // Nhận props đúng cách
+const PaginationOutlined = ({ count, page, onChange }) => {
     return (
         <Stack spacing={2}>
             <Pagination

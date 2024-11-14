@@ -1,9 +1,10 @@
 import CarouselComponent from "@/Components/CarouselComponent";
+import FeaturedDocumentLayout from '@/Layouts/FeaturedDocumentLayout';
+import FooterLayout from '@/Layouts/FooterLayout';
 import Navbar from "@/Layouts/NavLayout";
 import { useEffect } from 'react';
-
-export default function Welcome({ auth, categoriesParent }) {
-
+export default function Welcome({ auth, categoriesParent, featuredDocument }) {
+    console.log('featuredDocument', featuredDocument)
     useEffect(() => {
         if (categoriesParent) {
             localStorage.setItem('categoriesParent', JSON.stringify(categoriesParent));
@@ -27,8 +28,10 @@ export default function Welcome({ auth, categoriesParent }) {
                         className="mx-20 pt-[100px]  "
                         classNameImg="w-1/3 h-[350px] object-fill " />
                 </div>
-                <div>Tài liệu nổi bật trong tuần</div>
+
+                <FeaturedDocumentLayout items={featuredDocument} />
             </main>
+            <FooterLayout />
         </>
     );
 }

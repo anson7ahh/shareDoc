@@ -4,28 +4,29 @@ namespace App\Http\Controllers\User;
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use App\Services\File\FileService;
+
 use App\Http\Controllers\Controller;
 use App\Services\Comment\CommentService;
+use App\Services\Document\DocumentService;
 
 class FileDetailController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    protected $FileService;
+    protected $documentService;
     protected $CommentService;
-    public function __construct(FileService $FileService, CommentService $CommentService)
+    public function __construct(DocumentService $documentService, CommentService $CommentService)
 
     {
-        $this->FileService = $FileService;
+        $this->documentService = $documentService;
         $this->CommentService = $CommentService;
     }
-    public function index($id, $slug)
+    public function index($id)
     {
-        $this->FileService->incrementViewDocument($id);
+        $this->documentService->incrementViewDocument($id);
 
-        $data = $this->FileService->getDocumentWithId($id);
+        $data = $this->documentService->getDocumentWithId($id);
         $comment = $this->CommentService->getComment($id);
 
 

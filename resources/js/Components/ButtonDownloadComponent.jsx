@@ -4,14 +4,12 @@ import formatCurrency from '@/Utils/index';
 import { memo } from "react";
 
 function ButtonDownloadComponent({ document, auth }) {
-    console.log(document.documents_id);
-    console.log(document);
-    console.log(auth);
-
     const handleClick = async () => {
         try {
-            // Kiểm tra xem người dùng đã đăng nhập hay chưa
-
+            if (document.users_id === auth?.user?.id) {
+                alert("Bạn là tác giả . Vui lòng kiêu tra lại.");
+                return;
+            }
             // Nếu point > 0, hiện cửa sổ xác nhận
             if (Number(document.point) > 0) {
                 const confirmed = window.confirm(`Tài liệu có giá ${formatCurrency(document.point)}. Bạn chắc chắn không?`);

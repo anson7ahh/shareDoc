@@ -187,7 +187,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-
+        // 'Redis' => Illuminate\Support\Facades\Redis::Class,
         'PhpSpreadsheet' => PhpOffice\PhpSpreadsheet\Spreadsheet::class,
 
     ])->toArray(),

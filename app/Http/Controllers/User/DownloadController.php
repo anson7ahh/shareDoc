@@ -41,7 +41,7 @@ class DownloadController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $DownloadRequest)
+    public function store(DownloadRequest $DownloadRequest)
     {
         try {
             $CreateDownloadDTO = CreateDownloadData::from([

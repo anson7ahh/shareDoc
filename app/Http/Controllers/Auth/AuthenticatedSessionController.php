@@ -39,13 +39,10 @@ class AuthenticatedSessionController extends Controller
             "password" => $request->input('password')
         ];
 
-        if (Auth::attempt($info)) {
+        if (Auth::guard('user')->attempt($info)) {
             $request->session()->regenerate();
 
             return redirect()->intended(RouteServiceProvider::HOME);
-            // $redirectTo = $request->input('redirect', '/'); // Nếu không có 'redirect', chuyển về trang chủ
-            // return redirect()->intended($redirectTo);
-
         }
 
         return back()->withErrors([

@@ -5,7 +5,7 @@ import PageLayout from '@/Layouts/PageLayout';
 import { memo } from 'react';
 
 const DocCate = ({ auth, AncestorsAndSelf, paginatedItems }) => {
-    console.log('paginatedItems', paginatedItems?.original?.paginatedItems)
+
     const originalPaginatedItems = paginatedItems?.original?.paginatedItems;
     return (
         <>

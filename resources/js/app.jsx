@@ -24,7 +24,7 @@ createInertiaApp({
             <BrowserRouter>
                 <Provider store={store}>
                     <App {...props} />
-                </Provider>,
+                </Provider>
             </BrowserRouter>
 
         );

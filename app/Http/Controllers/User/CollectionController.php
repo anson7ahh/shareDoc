@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\User;
 
 use Inertia\Inertia;
-use App\Data\DownloadedData;
+use App\Data\CollectionData;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Document\DocumentService;
 use App\Services\Download\DownloadService;
+
 
 class CollectionController extends Controller
 {
@@ -15,20 +17,25 @@ class CollectionController extends Controller
      * Display a listing of the resource.
      */
     protected $downloadService;
-
-    public function __construct(DownloadService $downloadService)
+    protected $documentService;
+    public function __construct(DownloadService $downloadService, DocumentService $documentService)
     {
         $this->downloadService = $downloadService;
+        $this->documentService = $documentService;
     }
     public function index()
     {
         $userId = Auth::user()?->id;
-        $DownloadDTO = DownloadedData::from([
+        $CollectionData = CollectionData::from([
             'user_id' => $userId,
         ]);
-        $downloaded = $this->downloadService->getDocDownloaded($DownloadDTO);
+        $DocumentDownloaded = $this->downloadService->getDocDownloaded($CollectionData);
+        $DocumentUploaded = $this->documentService->getDocUploaded($CollectionData);
+
+
         return Inertia::render('User/Collections', [
-            'downloaded' => $downloaded
+            'DocumentDownloaded' => $DocumentDownloaded,
+            'DocumentUploaded' => $DocumentUploaded,
         ]);
     }
 
@@ -53,7 +60,6 @@ class CollectionController extends Controller
      */
     public function show(string $id)
     {
-        //
     }
 
     /**
@@ -77,6 +83,5 @@ class CollectionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
     }
 }

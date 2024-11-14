@@ -18,7 +18,7 @@ export default function Authenticated({ className = "", user }) {
     return (
         <div className={"bg-white" + className}>
             <Dropdown>
-                <Dropdown.Trigger>
+                <Dropdown.Trigger >
                     <span className="inline-flex rounded-md">
                         <button
                             type="button"
@@ -32,26 +32,24 @@ export default function Authenticated({ className = "", user }) {
                         </button>
                     </span>
                 </Dropdown.Trigger>
-                <Dropdown.Content className="w-[250px]">
-                    <Dropdown.Link className='w-full' href={route("profile.edit")}>
-                        Profile
+                <Dropdown.Content contentClasses='absolute z-50 w-48 bg-white rounded-md ring-1 ring-black ring-opacity-5 ' align="left" width='48'  >
+                    <Dropdown.Link href={route("profile.edit")}>
+                        Hồ sơ
                     </Dropdown.Link>
                     <Dropdown.Link
                         href={route('collection.index')}
                         method="get"
                         as="button"
                     >
-                        Collection
+                        Bộ sưu tập
                     </Dropdown.Link>
                     <Dropdown.Link
                         href={route("logout")}
                         method="post"
                         as="button"
                     >
-                        Log Out
+                        Đăng xuất
                     </Dropdown.Link>
-
-
                 </Dropdown.Content>
             </Dropdown>
 
@@ -126,6 +124,6 @@ export default function Authenticated({ className = "", user }) {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
