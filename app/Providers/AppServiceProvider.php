@@ -3,12 +3,14 @@
 namespace App\Providers;
 
 
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use App\Services\Category\CategoryService;
 use App\Services\Document\DocumentService;
+
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Document\DocumentRepository;
-
 use App\Services\Category\CategoryServiceImplement;
 use App\Services\Document\DocumentServiceImplement;
 use App\Services\UserManagement\UserManagementService;
@@ -35,6 +37,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
     }
 }

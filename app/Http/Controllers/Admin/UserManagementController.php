@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Admin;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Data\Admin\USerManagementPageData;
 use App\Services\UserManagement\UserManagementService;
 
@@ -20,15 +21,8 @@ class UserManagementController extends Controller
     {
         $this->user = $UserManagementService;
     }
-    public function index(Request $request)
+    public function index()
     {
-        $data = USerManagementPageData::from([
-            'page' => $request->input('page', 1),
-            'perPage' => $request->input('perPage', 1),
-
-        ]);
-        $allUser = $this->user->getAllUsers($data);
-        return Inertia::render('Admin/UserManagement', ['allUser' => $allUser]);
     }
     /**
      * Show the form for creating a new resource.
@@ -43,7 +37,16 @@ class UserManagementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = USerManagementPageData::from([
+            'page' => $request->input('page', 1),
+            'perPage' => $request->input('perPage', 1),
+
+        ]);
+        $allUser = $this->user->getAllUsers($data);
+        $admin = Auth::guard('admin')->user();
+        return Inertia::render('Admin/UserManagement', ['auth' => $admin, 'allUser' => $allUser]);
+
+        // return response()->json(['user' => $allUser]);
     }
 
     /**

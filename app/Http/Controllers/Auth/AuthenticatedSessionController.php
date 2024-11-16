@@ -39,7 +39,7 @@ class AuthenticatedSessionController extends Controller
             "password" => $request->input('password')
         ];
 
-        if (Auth::guard('user')->attempt($info)) {
+        if (Auth::guard('wed')->attempt($info)) {
             $request->session()->regenerate();
 
             return redirect()->intended(RouteServiceProvider::HOME);

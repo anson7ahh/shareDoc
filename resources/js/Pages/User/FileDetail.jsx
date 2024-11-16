@@ -27,7 +27,7 @@ const FileDetail = ({ auth, data, comment }) => {
         }
     }, [comment]);
     const DocumentItems = data.original?.pageItems;
-    console.log('DocumentItems', DocumentItems)
+
     return (
         <>
             <header>

@@ -80,7 +80,7 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('admin')->middleware('auth.admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/userManagement', [UserManagementController::class, 'index']);
+    Route::get('/userManagement', [UserManagementController::class, 'store'])->name('admin.userManagement');
 });
 
 

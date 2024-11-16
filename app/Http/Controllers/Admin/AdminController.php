@@ -21,18 +21,11 @@ class AdminController extends Controller
     {
         $this->user = $UserManagementService;
     }
-    public function index(Request $request)
+    public function index()
 
     {
-        $data = USerManagementPageData::from([
-            'page' => $request->input('page', 1),
-            'perPage' => $request->input('perPage', 1),
-
-        ]);
-
-        $allUser = $this->user->getAllUsers($data);
         $admin = Auth::guard('admin')->user();
-        return Inertia::render('Admin/Dashboard', ['auth' => $admin, 'allUser' => $allUser]);
+        return Inertia::render('Admin/Dashboard', ['auth' => $admin]);
     }
 
     /**

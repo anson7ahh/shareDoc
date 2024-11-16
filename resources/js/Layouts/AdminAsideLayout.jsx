@@ -1,19 +1,23 @@
-import { setActiveSection, setShowDropdownDocument } from '@/redux/AdminDashboardSlice';
+import { fetchUserManagement, setActiveSection, setShowDropdownDocument } from '@/redux/AdminDashboardSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import { Link } from "@inertiajs/react";
+import { useState } from 'react';
 
 export default function AdminAsideLayout() {
+
     const dispatch = useDispatch();
-    const { showOverview, showUserManagement, showSettings, showCategoryManagement,
-        showDropdownDocument, showDocumentNeedDelete, showDocumentNeedReview } =
+    const { showOverview, showSettings, showCategoryManagement,
+        showDropdownDocument, showUserManagement, showDocumentNeedDelete, showDocumentNeedReview } =
         useSelector((state) => state.adminDashboard);
     const handleShowOverview = () => {
         dispatch(setActiveSection('showOverview'));
     };
-    const handleShowUserManagement = () => {
+    const handleShowUserManagement = async () => {
         dispatch(setActiveSection('showUserManagement'));
+
+        dispatch(fetchUserManagement());
     };
     const handleShowSettings = () => {
         dispatch(setActiveSection('showSettings'));
@@ -26,7 +30,9 @@ export default function AdminAsideLayout() {
     }
 
     const handleShowDocumentNeedReview = () => {
+
         dispatch(setActiveSection('showDocumentNeedReview'));
+
     }
     const handleShowDocumentNeedDelete = () => {
         dispatch(setActiveSection('showDocumentNeedDelete'));
@@ -41,21 +47,23 @@ export default function AdminAsideLayout() {
                 </Link>
             </div>
 
-            <div className="flex flex-col space-y-4">
-                <div
+            <div className="flex flex-col items-start  space-y-4 ">
+                <Link
+                    href={route('admin.dashboard')}
                     onClick={handleShowOverview}
-                    className={` cursor-pointer text-lg font-medium hover:bg-gray-700 py-2 px-4 rounded-lg transition duration-300
-                    ${showOverview ? 'bg-gray-700' : ''}`}
+                    className={` cursor-pointer text-lg font-medium   hover:bg-gray-700 py-2 px-4 rounded-lg transition duration-300
+                    ${showOverview ? 'bg-gray-700   ' : ''}`}
                 >
                     Tổng quan
-                </div>
-                <div
+                </Link>
+                <Link
+                    href={route('admin.userManagement')}
                     onClick={handleShowUserManagement}
                     className={` cursor-pointer text-lg font-medium hover:bg-gray-700 py-2 px-4 rounded-lg transition duration-300
-                     ${showUserManagement ? 'bg-gray-700' : ''}`}
+                    ${showUserManagement ? 'bg-gray-700' : ''}`}
                 >
                     Quản lý người dùng
-                </div>
+                </Link>
 
 
                 <button
